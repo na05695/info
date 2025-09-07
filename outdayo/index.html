@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>minecrafter(out)の自己紹介</title>
+    <link rel="icon" href="images/site.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="images/site.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: rgba(33, 33, 33, 0.9);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid #4a8cff;
+        }
+        
+        header {
+            background-color: #2c3e50;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 3px solid #4a8cff;
+        }
+
+        .title-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .skin-icon {
+    width: 60px;   /* 表示上の幅（好きに調整可） */
+    height: auto;  /* アスペクト比を保ったまま縮小 */
+    border-radius: 12px; /* 丸角 */
+    object-fit: cover;
+    border: 2px solid #4a8cff;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+}
+
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: #4a8cff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background-color: #34495e;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #4a8cff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-content {
+            line-height: 1.6;
+        }
+        
+        .skill-bar {
+            margin-top: 15px;
+        }
+        
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .skill-level {
+            height: 10px;
+            background-color: #2c3e50;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .skill-value {
+            height: 100%;
+            border-radius: 5px;
+        }
+        
+        .architecture .skill-value {
+            width: 75%;
+            background-color: #4a8cff;
+        }
+        
+        .geography .skill-value {
+            width: 85%;
+            background-color: #4a8cff;
+        }
+        
+        .pvp .skill-value {
+            width: 40%;
+            background-color: #e74c3c;
+        }
+        
+        .hive {
+            grid-column: 1 / -1;
+            text-align: center;
+            background-color: #ff6b6b;
+        }
+        
+        .hive .card-title {
+            justify-content: center;
+            color: #fff;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #2c3e50;
+            border-top: 3px solid #4a8cff;
+        }
+        
+        .minecraft-icon {
+            font-size: 1.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-wrapper">
+                <img src="images/IMG_6002.jpg" alt="スキン画像" class="skin-icon">
+                <h1>minecrafter</h1>
+            </div>
+            <p class="tagline">建築と地理を楽しむ人</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="card">
+                <h2 class="card-title"><span class="minecraft-icon">⛏️</span> 勉強中</h2>
+                <div class="card-content">コマンドを練習しています。</div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><span class="minecraft-icon">🏗️</span> 得意なこと</h2>
+                <div class="card-content">
+                    <div class="skill-bar architecture">
+                        <div class="skill-name">
+                            <span>建築</span>
+                            <span>まあまあ</span>
+                        </div>
+                        <div class="skill-level">
+                            <div class="skill-value"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-bar geography">
+                        <div class="skill-name">
+                            <span>地理</span>
+                            <span>案外得意</span>
+                        </div>
+                        <div class="skill-level">
+                            <div class="skill-value"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><span class="minecraft-icon">⚔️</span> やりたいこと</h2>
+                <div class="card-content">
+                    <p>PvPがうまくなりたいです。</p>
+                    <div class="skill-bar pvp">
+                        <div class="skill-name">
+                            <span>現在のPvPスキル</span>
+                            <span>練習中</span>
+                        </div>
+                        <div class="skill-level">
+                            <div class="skill-value"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><span class="minecraft-icon">🌍</span> 遊び方</h2>
+                <div class="card-content">
+                    <p>建築するのが好きです。</p>
+                </div>
+            </div>
+            
+            <div class="card hive">
+                <h2 class="card-title"><span class="minecraft-icon">🎮</span> Hiveでプレイ</h2>
+                <div class="card-content">
+                    <p>暇なときはHiveサーバーでミニゲームを楽しんでいます。</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2025 ©out</p>
+        </footer>
+    </div>
+</body>
+</html>
