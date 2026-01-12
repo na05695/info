@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cappuccino12th - プロフィール</title>
+    <link rel="icon" type="image/png" href="image/icons.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #9b9b9b 0%, #a78bba 50%, #d4d4d4 100%);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 10;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 5vw;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .hero-content p {
+            font-size: 2vw;
+            opacity: 0.9;
+            font-weight: 300;
+            letter-spacing: 3px;
+            animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(15px); }
+        }
+
+        /* ===== CONTENT SECTION ===== */
+        .content {
+            background: #ffffff;
+            padding: 80px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 100px;
+        }
+
+        .section h2 {
+            font-size: 2.5em;
+            color: #0f3460;
+            margin-bottom: 30px;
+            font-weight: 700;
+            animation: fadeInLeft 0.8s ease-out;
+        }
+
+        .section p {
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .game-emoji {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .game-card h3 {
+            font-size: 2em;
+            color: #0f3460;
+            margin-bottom: 20px;
+        }
+
+        .game-card p {
+            font-size: 1.05em;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .skill-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .skill-emoji {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+        }
+
+        .skill-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .skill-card p {
+            font-size: 0.95em;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .rating {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .personality-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .personality-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.2);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .personality-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .personality-emoji {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .personality-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .personality-card p {
+            font-size: 0.95em;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 3em;
+            }
+
+            .hero-content p {
+                font-size: 1.3em;
+            }
+
+            .content {
+                padding: 40px 20px;
+            }
+
+            .section h2 {
+                font-size: 2em;
+            }
+
+            .game-container,
+            .skill-grid,
+            .personality-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="stars" id="stars"></div>
+        <div class="hero-content">
+            <h1>cappuccino12th</h1>
+            <p>自己紹介</p>
+        </div>
+        <div class="scroll-indicator">
+            <div style="font-size: 30px; color: white;">⬇</div>
+        </div>
+    </section>
+
+    <!-- CONTENT SECTION -->
+    <div class="content">
+        <!-- PROFILE -->
+        <section class="section">
+            <h2>🎮 プロフィール</h2>
+            <div style="display: flex; align-items: center; gap: 30px; margin-bottom: 30px;">
+                <img src="image/player.png" alt="プレイヤーアイコン" style="width: 150px; height: 150px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                <div>
+                    <p>永遠の12歳</p>
+                    <p style="margin-top: 20px; font-weight: 700; color: #0f3460;">取り組んでること：</p>
+                    <p>• Robloxで銃撃戦<br>
+                    • マイクラでドット絵・PvP・建築・コマンド</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAMES -->
+        <section class="section">
+            <h2>🎯 ゲーム活動</h2>
+            <div class="game-container">
+                <div class="game-card">
+                    <div class="game-emoji">🔫</div>
+                    <h3>Roblox</h3>
+                    <p>銃撃戦</p>
+                </div>
+                <div class="game-card">
+                    <div class="game-emoji">⛏️</div>
+                    <h3>Minecraft</h3>
+                    <p>ドット絵・PvP・建築・コマンド</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section class="section">
+            <h2>⚡ スキル</h2>
+            <div class="skill-grid">
+                <div class="skill-card">
+                    <div class="skill-emoji">🧠</div>
+                    <h3>記憶力</h3>
+                    <div class="rating">◎</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-emoji">🚀</div>
+                    <h3>チャレンジ精神</h3>
+                    <div class="rating">凄い</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-emoji">🎯</div>
+                    <h3>PvP系のエイム</h3>
+                    <div class="rating">いい</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-emoji">🔗</div>
+                    <h3>PVPでハメるのが得意</h3>
+                    <div class="rating">得意</div>
+                </div>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9em; color: #999;">※家族に聞きました</p>
+        </section>
+
+        <!-- PERSONALITY -->
+        <section class="section">
+            <h2>💭 性格</h2>
+            <div class="personality-grid">
+                <div class="personality-card">
+                    <div class="personality-emoji">🎭</div>
+                    <h3>サイコパス</h3>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Create stars in hero section
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+    </script>
+</body>
+</html>
