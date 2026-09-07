@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -33,6 +34,10 @@ body::before{
     pointer-events:none;
 }
 
+/* =========================
+   メイン
+========================= */
+
 .page{
     width:100%;
     height:100%;
@@ -46,10 +51,11 @@ header{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:0 28px;
+    padding:0 20px 0 28px;
     background:rgba(5,5,16,.9);
     border-bottom:1px solid rgba(0,255,255,.45);
     box-shadow:0 0 20px rgba(0,255,255,.15);
+    gap:15px;
 }
 
 .logo{
@@ -63,11 +69,43 @@ header{
         0 0 30px #00ffff;
 }
 
+.headerRight{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
 .status{
     font-size:11px;
     color:#ff00ff;
     text-shadow:0 0 10px #ff00ff;
 }
+
+/* 拡大縮小 */
+
+.zoomControls{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.zoomControls button{
+    padding:6px 10px;
+    font-size:13px;
+    min-width:32px;
+}
+
+#zoomValue{
+    min-width:45px;
+    text-align:center;
+    color:#00ffff;
+    font-size:12px;
+    text-shadow:0 0 8px #00ffff;
+}
+
+/* =========================
+   メインコンテンツ
+========================= */
 
 main{
     flex:1;
@@ -114,7 +152,10 @@ h1{
         0 0 20px #00ffff;
 }
 
-/* 独自入力欄 */
+/* =========================
+   独自入力
+========================= */
+
 .answerDisplay{
     width:230px;
     height:58px;
@@ -140,7 +181,10 @@ h1{
     letter-spacing:0;
 }
 
-/* 数字キーパッド */
+/* =========================
+   キーパッド
+========================= */
+
 .keypad{
     width:280px;
     margin:auto;
@@ -201,6 +245,10 @@ h1{
         0 0 25px #00ff99;
 }
 
+/* =========================
+   結果
+========================= */
+
 .result{
     min-height:28px;
     margin-top:15px;
@@ -222,6 +270,10 @@ h1{
     margin-top:12px;
     color:#999;
 }
+
+/* =========================
+   フッター
+========================= */
 
 footer{
     height:42px;
@@ -249,8 +301,10 @@ footer{
     transform:none;
 }
 
+/* =========================
+   画面切り替え
+========================= */
 
-/* オーバーレイ */
 .overlay{
     position:fixed;
     inset:0;
@@ -291,6 +345,10 @@ footer{
     font-weight:bold;
 }
 
+/* =========================
+   このサイトについて
+========================= */
+
 .aboutContent{
     flex:1;
     overflow:auto;
@@ -322,46 +380,86 @@ footer{
     line-height:1.9;
 }
 
+/* =========================
+   Google埋め込み
+========================= */
 
-/* Google */
-.googleArea{
-    position:relative;
+.searchArea{
     flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
     background:white;
 }
 
+.searchBar{
+    height:55px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    background:#080812;
+    border-bottom:1px solid #00ffff;
+}
+
+.searchInput{
+    flex:1;
+    height:38px;
+    padding:0 14px;
+    border:1px solid #00ffff;
+    border-radius:8px;
+    outline:none;
+    background:#050510;
+    color:white;
+    font-size:15px;
+    box-shadow:0 0 8px rgba(0,255,255,.3);
+}
+
+.searchInput:focus{
+    box-shadow:
+        0 0 10px #00ffff,
+        0 0 25px rgba(0,255,255,.3);
+}
+
+.searchButton{
+    height:38px;
+    padding:0 18px;
+}
+
 .googleFrame{
+    flex:1;
     width:100%;
     height:100%;
     border:0;
+    background:white;
 }
 
-.googleNotice{
-    position:absolute;
-    left:10px;
-    bottom:10px;
-    padding:7px 10px;
-    border-radius:7px;
-    background:rgba(0,0,0,.8);
-    color:#aaa;
-    font-size:10px;
-    pointer-events:none;
-}
+/* =========================
+   スマホ
+========================= */
 
-
-/* 小さい画面 */
-@media(max-width:450px){
+@media(max-width:600px){
 
     header{
-        padding:0 15px;
+        height:62px;
+        padding:0 10px;
     }
 
     .logo{
-        font-size:17px;
+        font-size:16px;
     }
 
     .status{
-        font-size:9px;
+        display:none;
+    }
+
+    .headerRight{
+        gap:5px;
+    }
+
+    .zoomControls button{
+        padding:5px 8px;
     }
 
     .card{
@@ -379,18 +477,54 @@ footer{
     .keypad{
         width:260px;
     }
+
+    .aboutContent{
+        padding:15px;
+    }
+
+    .aboutBox{
+        padding:25px;
+    }
 }
 </style>
 </head>
 
 <body>
 
+<!-- =========================
+     メインページ
+========================= -->
+
 <div class="page">
 
 <header>
-    <div class="logo">掛け算トレーニング</div>
-    <div class="status">● TRAINING MODE</div>
+
+    <div class="logo">
+        掛け算トレーニング
+    </div>
+
+    <div class="headerRight">
+
+        <div class="status">
+            ● TRAINING MODE
+        </div>
+
+        <div class="zoomControls">
+
+            <button onclick="zoomOut()">−</button>
+
+            <span id="zoomValue">100%</span>
+
+            <button onclick="zoomIn()">＋</button>
+
+            <button onclick="zoomReset()">リセット</button>
+
+        </div>
+
+    </div>
+
 </header>
+
 
 <main>
 
@@ -407,28 +541,66 @@ footer{
     </div>
 
     <!-- 独自入力表示 -->
-    <div id="answerDisplay" class="answerDisplay empty">
+    <div
+        id="answerDisplay"
+        class="answerDisplay empty">
         答えを入力
     </div>
 
-    <!-- 独自キーパッド -->
+    <!-- 独自数字入力 -->
     <div class="keypad">
 
-        <button class="key" onclick="pressNumber(1)">1</button>
-        <button class="key" onclick="pressNumber(2)">2</button>
-        <button class="key" onclick="pressNumber(3)">3</button>
+        <button class="key" onclick="pressNumber(1)">
+            1
+        </button>
 
-        <button class="key" onclick="pressNumber(4)">4</button>
-        <button class="key" onclick="pressNumber(5)">5</button>
-        <button class="key" onclick="pressNumber(6)">6</button>
+        <button class="key" onclick="pressNumber(2)">
+            2
+        </button>
 
-        <button class="key" onclick="pressNumber(7)">7</button>
-        <button class="key" onclick="pressNumber(8)">8</button>
-        <button class="key" onclick="pressNumber(9)">9</button>
+        <button class="key" onclick="pressNumber(3)">
+            3
+        </button>
 
-        <button class="key clear" onclick="clearAnswer()">C</button>
-        <button class="key" onclick="pressNumber(0)">0</button>
-        <button class="key delete" onclick="deleteNumber()">⌫</button>
+        <button class="key" onclick="pressNumber(4)">
+            4
+        </button>
+
+        <button class="key" onclick="pressNumber(5)">
+            5
+        </button>
+
+        <button class="key" onclick="pressNumber(6)">
+            6
+        </button>
+
+        <button class="key" onclick="pressNumber(7)">
+            7
+        </button>
+
+        <button class="key" onclick="pressNumber(8)">
+            8
+        </button>
+
+        <button class="key" onclick="pressNumber(9)">
+            9
+        </button>
+
+        <button
+            class="key clear"
+            onclick="clearAnswer()">
+            C
+        </button>
+
+        <button class="key" onclick="pressNumber(0)">
+            0
+        </button>
+
+        <button
+            class="key delete"
+            onclick="deleteNumber()">
+            ⌫
+        </button>
 
         <button
             class="key submit"
@@ -442,16 +614,21 @@ footer{
     <div id="result" class="result"></div>
 
     <div class="score">
+
         正解：
         <span id="score">0</span>
+
        　
+
         問題数：
         <span id="total">0</span>
+
     </div>
 
 </div>
 
 </main>
+
 
 <footer>
 
@@ -466,12 +643,17 @@ footer{
 </div>
 
 
-<!-- このサイトについて -->
+<!-- =========================
+     このサイトについて
+========================= -->
+
 <div id="aboutPage" class="overlay">
 
     <div class="overlayHeader">
 
-        <button class="back" onclick="goBack()">
+        <button
+            class="back"
+            onclick="goBack()">
             ← 戻る
         </button>
 
@@ -485,7 +667,9 @@ footer{
 
         <div class="aboutBox">
 
-            <h2>このサイトについて</h2>
+            <h2>
+                このサイトについて
+            </h2>
 
             <p>
                 このサイトでは、1桁の掛け算を中心とした
@@ -514,12 +698,18 @@ footer{
 </div>
 
 
-<!-- Google -->
-<div id="googlePage" class="overlay">
+<!-- =========================
+     Google検索
+     ※同じHTML内
+========================= -->
+
+<div id="searchPage" class="overlay">
 
     <div class="overlayHeader">
 
-        <button class="back" onclick="goBack()">
+        <button
+            class="back"
+            onclick="goBack()">
             ← 戻る
         </button>
 
@@ -529,7 +719,23 @@ footer{
 
     </div>
 
-    <div class="googleArea">
+    <div class="searchArea">
+
+        <div class="searchBar">
+
+            <input
+                id="searchInput"
+                class="searchInput"
+                type="text"
+                placeholder="検索">
+
+            <button
+                class="searchButton"
+                onclick="googleSearch()">
+                検索
+            </button>
+
+        </div>
 
         <iframe
             id="googleFrame"
@@ -538,10 +744,6 @@ footer{
             title="Google検索">
         </iframe>
 
-        <div class="googleNotice">
-            Google側の設定によって表示できない場合があります。
-        </div>
-
     </div>
 
 </div>
@@ -549,9 +751,9 @@ footer{
 
 <script>
 
-/* =================================
-   掛け算ゲーム
-================================= */
+/* ==================================
+   掛け算
+================================== */
 
 let a = 0;
 let b = 0;
@@ -562,7 +764,8 @@ let score = 0;
 let total = 0;
 
 
-/* 新しい問題 */
+/* 問題生成 */
+
 function newQuestion(){
 
     a = Math.floor(Math.random() * 9) + 1;
@@ -570,25 +773,24 @@ function newQuestion(){
 
     answer = "";
 
-    document.getElementById("question")
+    document
+        .getElementById("question")
         .textContent = a + " × " + b;
 
     updateDisplay();
 
-    document.getElementById("result")
+    document
+        .getElementById("result")
         .textContent = "";
+
 }
 
 
-/* =================================
+/* ==================================
    独自入力
-================================= */
+================================== */
 
 function pressNumber(number){
-
-    /*
-       答えが長くなりすぎないように制限
-    */
 
     if(answer.length >= 3){
         return;
@@ -597,28 +799,28 @@ function pressNumber(number){
     answer += number;
 
     updateDisplay();
+
 }
 
 
-/* 1文字削除 */
 function deleteNumber(){
 
     answer = answer.slice(0,-1);
 
     updateDisplay();
+
 }
 
 
-/* 全消去 */
 function clearAnswer(){
 
     answer = "";
 
     updateDisplay();
+
 }
 
 
-/* 表示更新 */
 function updateDisplay(){
 
     const display =
@@ -641,9 +843,9 @@ function updateDisplay(){
 }
 
 
-/* =================================
+/* ==================================
    回答
-================================= */
+================================== */
 
 function checkAnswer(){
 
@@ -654,8 +856,7 @@ function checkAnswer(){
     const value = Number(answer);
 
     /*
-       正解した場合のみ
-       次の問題へ進む
+       正解
     */
 
     if(value === a * b){
@@ -663,17 +864,24 @@ function checkAnswer(){
         score++;
         total++;
 
-        document.getElementById("result").innerHTML =
-            '<span class="correct">✓ 正解！ 次の問題へ！</span>';
+        document
+            .getElementById("result")
+            .innerHTML =
+            '<span class="correct">' +
+            '✓ 正解！ 次の問題へ！' +
+            '</span>';
 
-        document.getElementById("score")
+        document
+            .getElementById("score")
             .textContent = score;
 
-        document.getElementById("total")
+        document
+            .getElementById("total")
             .textContent = total;
 
+
         /*
-           少しだけ正解表示を見せてから
+           正解したときだけ
            次の問題へ
         */
 
@@ -683,37 +891,41 @@ function checkAnswer(){
 
         },500);
 
+
     }else{
 
         /*
-           不正解の場合は問題を変更しない
+           不正解なら問題は変わらない
         */
 
         total++;
 
-        document.getElementById("result").innerHTML =
-            '<span class="wrong">✕ 不正解！ もう一度！</span>';
+        document
+            .getElementById("result")
+            .innerHTML =
+            '<span class="wrong">' +
+            '✕ 不正解！ もう一度！' +
+            '</span>';
 
-        document.getElementById("total")
+        document
+            .getElementById("total")
             .textContent = total;
 
-        /*
-           間違えた答えを消す
-        */
 
         setTimeout(function(){
 
             clearAnswer();
 
         },400);
+
     }
 
 }
 
 
-/* =================================
+/* ==================================
    このサイトについて
-================================= */
+================================== */
 
 let aboutCount = 0;
 
@@ -724,7 +936,7 @@ function aboutClick(){
     /*
        1回目 → 説明
        2回目 → 説明
-       3回目 → Google
+       3回目 → 検索
     */
 
     if(aboutCount <= 2){
@@ -733,16 +945,16 @@ function aboutClick(){
 
     }else{
 
-        showPage("googlePage");
+        showPage("searchPage");
 
     }
 
 }
 
 
-/* =================================
+/* ==================================
    画面切り替え
-================================= */
+================================== */
 
 function showPage(id){
 
@@ -751,7 +963,7 @@ function showPage(id){
         .classList.remove("show");
 
     document
-        .getElementById("googlePage")
+        .getElementById("searchPage")
         .classList.remove("show");
 
     document
@@ -767,9 +979,9 @@ function showPage(id){
 }
 
 
-/* =================================
+/* ==================================
    戻る
-================================= */
+================================== */
 
 function goBack(){
 
@@ -778,23 +990,127 @@ function goBack(){
 }
 
 
-window.addEventListener("popstate",function(){
+window.addEventListener(
+    "popstate",
+    function(){
+
+        document
+            .getElementById("aboutPage")
+            .classList.remove("show");
+
+        document
+            .getElementById("searchPage")
+            .classList.remove("show");
+
+    }
+);
+
+
+/* ==================================
+   Google検索
+================================== */
+
+function googleSearch(){
+
+    const query =
+        document
+        .getElementById("searchInput")
+        .value
+        .trim();
+
+    if(query === ""){
+        return;
+    }
+
+    const url =
+        "https://www.google.com/search?igu=1&q=" +
+        encodeURIComponent(query);
 
     document
-        .getElementById("aboutPage")
-        .classList.remove("show");
+        .getElementById("googleFrame")
+        .src = url;
+
+}
+
+
+/* Enterで検索 */
+
+document
+    .getElementById("searchInput")
+    .addEventListener(
+        "keydown",
+        function(e){
+
+            if(e.key === "Enter"){
+                googleSearch();
+            }
+
+        }
+    );
+
+
+/* ==================================
+   ページ拡大・縮小
+================================== */
+
+let zoom = 100;
+
+function applyZoom(){
+
+    document.body.style.zoom =
+        zoom + "%";
 
     document
-        .getElementById("googlePage")
-        .classList.remove("show");
+        .getElementById("zoomValue")
+        .textContent =
+        zoom + "%";
 
-});
+}
 
 
-/* 最初の問題 */
+function zoomIn(){
+
+    if(zoom < 200){
+
+        zoom += 10;
+
+        applyZoom();
+
+    }
+
+}
+
+
+function zoomOut(){
+
+    if(zoom > 50){
+
+        zoom -= 10;
+
+        applyZoom();
+
+    }
+
+}
+
+
+function zoomReset(){
+
+    zoom = 100;
+
+    applyZoom();
+
+}
+
+
+/* ==================================
+   初期化
+================================== */
+
 newQuestion();
 
 </script>
 
 </body>
 </html>
+```
