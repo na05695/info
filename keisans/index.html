@@ -26,10 +26,6 @@ body {
     overflow-x: hidden;
 }
 
-/* =========================================================
-   全体
-   ========================================================= */
-
 #zoomRoot {
     min-height: 100vh;
     transform-origin: top left;
@@ -44,7 +40,7 @@ body {
 
 /* =========================================================
    ヘッダー
-   ========================================================= */
+========================================================= */
 
 header {
     height: 70px;
@@ -61,6 +57,7 @@ header {
         );
 
     border-bottom: 1px solid #00ffff;
+
     box-shadow:
         0 0 15px rgba(0,255,255,0.35);
 }
@@ -68,6 +65,7 @@ header {
 .logo {
     font-size: 24px;
     font-weight: bold;
+
     color: #00ffff;
 
     text-shadow:
@@ -79,10 +77,6 @@ header {
     font-size: 13px;
     color: #aaa;
 }
-
-/* =========================================================
-   ズーム
-   ========================================================= */
 
 .zoom-controls {
     display: flex;
@@ -108,7 +102,7 @@ header {
 
 /* =========================================================
    メイン
-   ========================================================= */
+========================================================= */
 
 main {
     flex: 1;
@@ -165,6 +159,7 @@ main {
 
 .answer-input {
     width: 100%;
+
     padding: 15px;
 
     font-size: 25px;
@@ -199,8 +194,6 @@ main {
     font-weight: bold;
 
     cursor: pointer;
-
-    transition: 0.2s;
 }
 
 .action-button:hover {
@@ -220,10 +213,11 @@ main {
 
 /* =========================================================
    フッター
-   ========================================================= */
+========================================================= */
 
 footer {
     padding: 15px;
+
     text-align: center;
 
     border-top: 1px solid #ff00ff;
@@ -253,7 +247,7 @@ footer {
 
 /* =========================================================
    オーバーレイ
-   ========================================================= */
+========================================================= */
 
 .overlay {
     position: fixed;
@@ -265,7 +259,7 @@ footer {
     display: none;
 
     background:
-        rgba(0,0,10,0.96);
+        rgba(0,0,10,0.97);
 
     overflow-y: auto;
 }
@@ -322,7 +316,7 @@ footer {
 
 /* =========================================================
    検索タブ
-   ========================================================= */
+========================================================= */
 
 .search-tabs {
     display: flex;
@@ -355,10 +349,6 @@ footer {
         0 0 15px #00ffff;
 }
 
-/* =========================================================
-   Google
-   ========================================================= */
-
 .search-panel {
     display: none;
 }
@@ -366,6 +356,10 @@ footer {
 .search-panel.active {
     display: block;
 }
+
+/* =========================================================
+   検索欄
+========================================================= */
 
 .search-input-area {
     display: flex;
@@ -415,8 +409,8 @@ footer {
 }
 
 /* =========================================================
-   Google iframe
-   ========================================================= */
+   Google
+========================================================= */
 
 .google-frame {
     width: 100%;
@@ -429,8 +423,8 @@ footer {
 }
 
 /* =========================================================
-   YouTube
-   ========================================================= */
+   YouTube検索結果
+========================================================= */
 
 .youtube-results {
     display: grid;
@@ -523,8 +517,8 @@ footer {
 }
 
 /* =========================================================
-   YouTubeプレイヤー
-   ========================================================= */
+   Shortsプレイヤー
+========================================================= */
 
 #youtubePlayerArea {
     display: none;
@@ -538,35 +532,57 @@ footer {
     color: #ff00ff;
 
     font-weight: bold;
-}
 
-.youtube-player-wrapper {
-    position: relative;
-
-    width: 100%;
-
-    aspect-ratio: 16 / 9;
-
-    background: black;
-
-    border-radius: 10px;
-
+    white-space: nowrap;
     overflow: hidden;
-
-    border: 1px solid #ff00ff;
-
-    box-shadow:
-        0 0 20px rgba(255,0,255,0.25);
+    text-overflow: ellipsis;
 }
 
-.youtube-player {
-    position: absolute;
-
+.shorts-container {
     width: 100%;
-    height: 100%;
 
-    left: 0;
-    top: 0;
+    height: 80vh;
+
+    overflow-y: auto;
+
+    scroll-snap-type: y mandatory;
+
+    overscroll-behavior-y: contain;
+
+    scrollbar-width: none;
+
+    border-radius: 12px;
+
+    background: #000;
+}
+
+.shorts-container::-webkit-scrollbar {
+    display: none;
+}
+
+.short-item {
+    width: 100%;
+
+    height: 80vh;
+
+    scroll-snap-align: start;
+
+    scroll-snap-stop: always;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #000;
+
+    position: relative;
+}
+
+.short-item iframe {
+    width: min(450px, 100%);
+
+    height: 100%;
 
     border: 0;
 }
@@ -592,7 +608,7 @@ footer {
 
 /* =========================================================
    スマホ
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 600px) {
 
@@ -636,6 +652,18 @@ footer {
     .google-frame {
         height: 500px;
     }
+
+    .shorts-container {
+        height: 75vh;
+    }
+
+    .short-item {
+        height: 75vh;
+    }
+
+    .short-item iframe {
+        width: 100%;
+    }
 }
 </style>
 </head>
@@ -661,9 +689,19 @@ footer {
     </div>
 
     <div class="zoom-controls">
-        <button onclick="changeZoom(-0.1)">−</button>
-        <button onclick="resetZoom()">100%</button>
-        <button onclick="changeZoom(0.1)">＋</button>
+
+        <button onclick="changeZoom(-0.1)">
+            −
+        </button>
+
+        <button onclick="resetZoom()">
+            100%
+        </button>
+
+        <button onclick="changeZoom(0.1)">
+            ＋
+        </button>
+
     </div>
 
 </header>
@@ -677,7 +715,9 @@ footer {
 
 <div class="training-box">
 
-    <h1>掛け算トレーニング</h1>
+    <h1>
+        掛け算トレーニング
+    </h1>
 
     <div
         class="question"
@@ -731,7 +771,7 @@ footer {
 
 
 <!-- =======================================================
-     ABOUT OVERLAY
+     ABOUT
 ======================================================= -->
 
 <div
@@ -758,7 +798,7 @@ footer {
         </p>
 
         <p>
-            フッターのボタンを複数回押すと、
+            フッターのボタンを3回押すと、
             検索ページを開くことができます。
         </p>
 
@@ -768,7 +808,7 @@ footer {
 
 
 <!-- =======================================================
-     SEARCH OVERLAY
+     SEARCH
 ======================================================= -->
 
 <div
@@ -829,7 +869,10 @@ footer {
                     class="search-input"
                     type="text"
                     placeholder="Googleで検索..."
-                    onkeydown="if(event.key === 'Enter') googleSearch()"
+                    onkeydown="
+                        if(event.key === 'Enter')
+                            googleSearch()
+                    "
                 >
 
                 <button
@@ -867,7 +910,10 @@ footer {
                     class="search-input"
                     type="text"
                     placeholder="YouTubeで検索..."
-                    onkeydown="if(event.key === 'Enter') youtubeSearch()"
+                    onkeydown="
+                        if(event.key === 'Enter')
+                            youtubeSearch()
+                    "
                 >
 
                 <button
@@ -880,31 +926,25 @@ footer {
             </div>
 
 
-            <!-- プレイヤー -->
+            <!-- Shortsプレイヤー -->
 
             <div
                 id="youtubePlayerArea"
             >
 
-                <div class="player-title">
+                <div
+                    class="player-title"
+                    id="playerTitle"
+                >
                     ▶ 再生中
                 </div>
 
-                <div class="youtube-player-wrapper">
 
-                    <iframe
-                        id="youtubePlayer"
-                        class="youtube-player"
-                        allow="
-                            autoplay;
-                            encrypted-media;
-                            picture-in-picture;
-                            fullscreen
-                        "
-                        allowfullscreen
-                    ></iframe>
+                <div
+                    id="shortsContainer"
+                    class="shorts-container"
+                ></div>
 
-                </div>
 
                 <button
                     class="player-close"
@@ -939,11 +979,12 @@ footer {
 <script>
 
 /* =========================================================
-   YouTube API設定
-   ========================================================= */
+   YouTube API KEY
+========================================================= */
 
 /*
-    ↓↓↓ ここに自分のAPIキーを入れる ↓↓↓
+    ここに自分のYouTube Data API v3の
+    APIキーを入れてください。
 */
 
 const YOUTUBE_API_KEY =
@@ -952,28 +993,39 @@ const YOUTUBE_API_KEY =
 
 /* =========================================================
    掛け算
-   ========================================================= */
+========================================================= */
 
 let numberA = 1;
 let numberB = 1;
 
+
 function newQuestion() {
 
     numberA =
-        Math.floor(Math.random() * 9) + 1;
+        Math.floor(
+            Math.random() * 9
+        ) + 1;
 
     numberB =
-        Math.floor(Math.random() * 9) + 1;
+        Math.floor(
+            Math.random() * 9
+        ) + 1;
 
-    document.getElementById("question")
-        .textContent =
+
+    document.getElementById(
+        "question"
+    ).textContent =
         `${numberA} × ${numberB} = ?`;
 
-    document.getElementById("answer")
-        .value = "";
 
-    document.getElementById("result")
-        .textContent = "";
+    document.getElementById(
+        "answer"
+    ).value = "";
+
+
+    document.getElementById(
+        "result"
+    ).textContent = "";
 }
 
 
@@ -981,14 +1033,21 @@ function checkAnswer() {
 
     const answer =
         Number(
-            document.getElementById("answer").value
+            document.getElementById(
+                "answer"
+            ).value
         );
+
 
     const correct =
         numberA * numberB;
 
+
     const result =
-        document.getElementById("result");
+        document.getElementById(
+            "result"
+        );
+
 
     if (answer === correct) {
 
@@ -997,6 +1056,7 @@ function checkAnswer() {
 
         result.style.color =
             "#00ffff";
+
 
         setTimeout(
             newQuestion,
@@ -1013,8 +1073,6 @@ function checkAnswer() {
     }
 }
 
-
-/* Enterキーでも回答 */
 
 document
     .getElementById("answer")
@@ -1035,23 +1093,27 @@ newQuestion();
 
 /* =========================================================
    ズーム
-   ========================================================= */
+========================================================= */
 
-let zoom =
-    1;
+let zoom = 1;
+
 
 function changeZoom(amount) {
 
     zoom += amount;
 
+
     if (zoom < 0.5)
         zoom = 0.5;
+
 
     if (zoom > 2)
         zoom = 2;
 
-    document.getElementById("zoomRoot")
-        .style.transform =
+
+    document.getElementById(
+        "zoomRoot"
+    ).style.transform =
         `scale(${zoom})`;
 }
 
@@ -1060,30 +1122,25 @@ function resetZoom() {
 
     zoom = 1;
 
-    document.getElementById("zoomRoot")
-        .style.transform =
+
+    document.getElementById(
+        "zoomRoot"
+    ).style.transform =
         "scale(1)";
 }
 
 
 /* =========================================================
-   Aboutボタン
-   ========================================================= */
+   About
+========================================================= */
 
-let aboutClickCount =
-    0;
+let aboutClickCount = 0;
+
 
 function aboutButtonClicked() {
 
     aboutClickCount++;
 
-    /*
-       1回目・2回目
-       → About
-
-       3回目
-       → 検索
-    */
 
     if (aboutClickCount >= 3) {
 
@@ -1095,25 +1152,28 @@ function aboutButtonClicked() {
 
         document.getElementById(
             "aboutOverlay"
-        ).style.display = "block";
-
+        ).style.display =
+            "block";
     }
 }
 
 
 /* =========================================================
    Overlay
-   ========================================================= */
+========================================================= */
 
 function closeOverlay() {
 
     document.getElementById(
         "aboutOverlay"
-    ).style.display = "none";
+    ).style.display =
+        "none";
+
 
     document.getElementById(
         "searchOverlay"
-    ).style.display = "none";
+    ).style.display =
+        "none";
 }
 
 
@@ -1121,17 +1181,20 @@ function openSearch() {
 
     document.getElementById(
         "aboutOverlay"
-    ).style.display = "none";
+    ).style.display =
+        "none";
+
 
     document.getElementById(
         "searchOverlay"
-    ).style.display = "block";
+    ).style.display =
+        "block";
 }
 
 
 /* =========================================================
    検索タブ
-   ========================================================= */
+========================================================= */
 
 function switchSearch(type) {
 
@@ -1140,15 +1203,18 @@ function switchSearch(type) {
             "googlePanel"
         );
 
+
     const youtubePanel =
         document.getElementById(
             "youtubePanel"
         );
 
+
     const googleTab =
         document.getElementById(
             "googleTab"
         );
+
 
     const youtubeTab =
         document.getElementById(
@@ -1191,14 +1257,13 @@ function switchSearch(type) {
         youtubeTab.classList.add(
             "active"
         );
-
     }
 }
 
 
 /* =========================================================
    Google検索
-   ========================================================= */
+========================================================= */
 
 function googleSearch() {
 
@@ -1207,12 +1272,15 @@ function googleSearch() {
             "googleSearchInput"
         ).value.trim();
 
+
     if (!query)
         return;
+
 
     const url =
         "https://www.google.com/search?igu=1&q=" +
         encodeURIComponent(query);
+
 
     document.getElementById(
         "googleFrame"
@@ -1221,8 +1289,17 @@ function googleSearch() {
 
 
 /* =========================================================
+   YouTube動画データ
+========================================================= */
+
+let youtubeVideos = [];
+
+let currentYoutubeIndex = 0;
+
+
+/* =========================================================
    YouTube検索
-   ========================================================= */
+========================================================= */
 
 async function youtubeSearch() {
 
@@ -1249,14 +1326,12 @@ async function youtubeSearch() {
     `;
 
 
-    /*
-       APIキー未設定チェック
-    */
+    /* APIキー確認 */
 
     if (
         !YOUTUBE_API_KEY ||
         YOUTUBE_API_KEY ===
-        "AIzaSyAqsyHN0bRs_jzBaDQfA84DgTsYGuSOy-A"
+        "YOUR_YOUTUBE_API_KEY"
     ) {
 
         results.innerHTML = `
@@ -1274,10 +1349,6 @@ async function youtubeSearch() {
 
 
     try {
-
-        /*
-           YouTube Data API v3
-        */
 
         const url =
             "https://www.googleapis.com/youtube/v3/search" +
@@ -1300,15 +1371,14 @@ async function youtubeSearch() {
             await response.json();
 
 
-        /*
-           APIエラー
-        */
+        /* APIエラー */
 
         if (data.error) {
 
             console.error(
                 data.error
             );
+
 
             results.innerHTML = `
                 <div class="youtube-message">
@@ -1325,9 +1395,7 @@ async function youtubeSearch() {
         }
 
 
-        /*
-           動画なし
-        */
+        /* 動画なし */
 
         if (
             !data.items ||
@@ -1345,61 +1413,54 @@ async function youtubeSearch() {
 
 
         /*
-           結果を表示
+           動画データ保存
         */
+
+        youtubeVideos =
+            data.items
+                .filter(
+                    item =>
+                        item.id &&
+                        item.id.videoId
+                )
+                .map(
+                    item => ({
+                        videoId:
+                            item.id.videoId,
+
+                        title:
+                            item.snippet.title,
+
+                        channelTitle:
+                            item.snippet.channelTitle,
+
+                        thumbnail:
+                            item.snippet.thumbnails
+                                .high?.url ||
+                            item.snippet.thumbnails
+                                .medium?.url ||
+                            item.snippet.thumbnails
+                                .default?.url
+                    })
+                );
+
+
+        currentYoutubeIndex = 0;
+
+
+        /* 検索結果表示 */
 
         results.innerHTML = "";
 
 
-        data.items.forEach(
-            item => {
-
-                const videoId =
-                    item.id.videoId;
-
-                const title =
-                    item.snippet.title;
-
-                const description =
-                    item.snippet.description;
-
-                const channelTitle =
-                    item.snippet.channelTitle;
-
-                const publishedAt =
-                    item.snippet.publishedAt;
-
-
-                /*
-                   サムネイル
-                */
-
-                const thumbnail =
-                    item.snippet.thumbnails.high?.url ||
-                    item.snippet.thumbnails.medium?.url ||
-                    item.snippet.thumbnails.default?.url;
-
-
-                /*
-                   日付
-                */
-
-                const date =
-                    new Date(
-                        publishedAt
-                    ).toLocaleDateString(
-                        "ja-JP"
-                    );
-
-
-                /*
-                   カード作成
-                */
+        youtubeVideos.forEach(
+            (video, index) => {
 
                 const card =
                     document.createElement(
                         "div"
                     );
+
 
                 card.className =
                     "youtube-result";
@@ -1408,7 +1469,9 @@ async function youtubeSearch() {
                 card.innerHTML = `
 
                     <img
-                        src="${escapeHtml(thumbnail)}"
+                        src="${escapeHtml(
+                            video.thumbnail
+                        )}"
                         class="youtube-thumbnail"
                         alt=""
                     >
@@ -1417,35 +1480,35 @@ async function youtubeSearch() {
 
                         <div
                             class="youtube-title"
-                            title="${escapeHtml(title)}"
+                            title="${escapeHtml(
+                                video.title
+                            )}"
                         >
-                            ${escapeHtml(title)}
+                            ${escapeHtml(
+                                video.title
+                            )}
                         </div>
 
-                        <div class="youtube-channel">
-                            ${escapeHtml(channelTitle)}
-                        </div>
-
-                        <div class="youtube-date">
-                            ${date}
+                        <div
+                            class="youtube-channel"
+                        >
+                            ${escapeHtml(
+                                video.channelTitle
+                            )}
                         </div>
 
                     </div>
-
                 `;
 
-
-                /*
-                   クリックで再生
-                */
 
                 card.addEventListener(
                     "click",
                     () => {
 
                         playYoutube(
-                            videoId,
-                            title
+                            video.videoId,
+                            video.title,
+                            index
                         );
 
                     }
@@ -1466,81 +1529,295 @@ async function youtubeSearch() {
             error
         );
 
+
         results.innerHTML = `
             <div class="youtube-message">
                 YouTubeに接続できませんでした。
-                <br>
+                <br><br>
                 ネットワーク接続を確認してください。
             </div>
         `;
-
     }
 }
 
 
 /* =========================================================
-   YouTube再生
-   ========================================================= */
+   Shortsプレイヤー
+========================================================= */
 
 function playYoutube(
     videoId,
-    title
+    title,
+    index
 ) {
+
+    currentYoutubeIndex =
+        index;
+
 
     const playerArea =
         document.getElementById(
             "youtubePlayerArea"
         );
 
-    const player =
+
+    const container =
         document.getElementById(
-            "youtubePlayer"
+            "shortsContainer"
         );
+
 
     const playerTitle =
-        document.querySelector(
-            ".player-title"
+        document.getElementById(
+            "playerTitle"
         );
-
-
-    /*
-       embed/VIDEO_ID
-    */
-
-    player.src =
-        `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-
-
-    playerTitle.textContent =
-        "▶ " + title;
 
 
     playerArea.style.display =
         "block";
 
 
+    playerTitle.textContent =
+        "▶ " + title;
+
+
     /*
-       プレイヤーまでスクロール
+       いったん全部作り直す
     */
 
-    playerArea.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
+    container.innerHTML = "";
 
+
+    youtubeVideos.forEach(
+        (video, i) => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "short-item";
+
+
+            const iframe =
+                document.createElement(
+                    "iframe"
+                );
+
+
+            /*
+               選択した動画だけ
+               最初から自動再生
+            */
+
+            iframe.src =
+                `https://www.youtube.com/embed/${video.videoId}` +
+                `?autoplay=${i === index ? 1 : 0}` +
+                `&playsinline=1`;
+
+
+            iframe.allow =
+                "autoplay; encrypted-media; picture-in-picture; fullscreen";
+
+
+            iframe.allowFullscreen =
+                true;
+
+
+            item.appendChild(
+                iframe
+            );
+
+
+            container.appendChild(
+                item
+            );
+
+        }
+    );
+
+
+    /*
+       選択した動画まで移動
+    */
+
+    setTimeout(
+        () => {
+
+            const items =
+                container.querySelectorAll(
+                    ".short-item"
+                );
+
+
+            if (items[index]) {
+
+                items[index].scrollIntoView({
+                    behavior: "instant",
+                    block: "start"
+                });
+
+            }
+
+        },
+        50
+    );
+
+
+    /*
+       スクロール位置を監視
+    */
+
+    setupShortsScroll();
+}
+
+
+/* =========================================================
+   Shortsスクロール監視
+========================================================= */
+
+let shortsScrollReady = false;
+
+
+function setupShortsScroll() {
+
+    const container =
+        document.getElementById(
+            "shortsContainer"
+        );
+
+
+    if (shortsScrollReady)
+        return;
+
+
+    shortsScrollReady = true;
+
+
+    container.addEventListener(
+        "scroll",
+        function() {
+
+            const height =
+                container.clientHeight;
+
+
+            if (height <= 0)
+                return;
+
+
+            const index =
+                Math.round(
+                    container.scrollTop /
+                    height
+                );
+
+
+            if (
+                index < 0 ||
+                index >= youtubeVideos.length
+            ) {
+                return;
+            }
+
+
+            if (
+                index !==
+                currentYoutubeIndex
+            ) {
+
+                currentYoutubeIndex =
+                    index;
+
+
+                updateCurrentShort(
+                    index
+                );
+            }
+
+        }
+    );
+}
+
+
+/* =========================================================
+   現在のShortsを更新
+========================================================= */
+
+function updateCurrentShort(index) {
+
+    const video =
+        youtubeVideos[index];
+
+
+    if (!video)
+        return;
+
+
+    document.getElementById(
+        "playerTitle"
+    ).textContent =
+        "▶ " + video.title;
+
+
+    const container =
+        document.getElementById(
+            "shortsContainer"
+        );
+
+
+    const items =
+        container.querySelectorAll(
+            ".short-item"
+        );
+
+
+    /*
+       現在の動画だけ再生
+    */
+
+    items.forEach(
+        (item, i) => {
+
+            const iframe =
+                item.querySelector(
+                    "iframe"
+                );
+
+
+            if (!iframe)
+                return;
+
+
+            if (i === index) {
+
+                iframe.src =
+                    `https://www.youtube.com/embed/${youtubeVideos[i].videoId}` +
+                    `?autoplay=1&playsinline=1`;
+
+            } else {
+
+                /*
+                   他の動画は停止
+                */
+
+                iframe.src =
+                    `https://www.youtube.com/embed/${youtubeVideos[i].videoId}` +
+                    `?autoplay=0&playsinline=1`;
+            }
+
+        }
+    );
 }
 
 
 /* =========================================================
    YouTubeプレイヤーを閉じる
-   ========================================================= */
+========================================================= */
 
 function closeYoutubePlayer() {
-
-    const player =
-        document.getElementById(
-            "youtubePlayer"
-        );
 
     const playerArea =
         document.getElementById(
@@ -1548,20 +1825,31 @@ function closeYoutubePlayer() {
         );
 
 
-    /*
-       srcを空にして再生停止
-    */
+    const container =
+        document.getElementById(
+            "shortsContainer"
+        );
 
-    player.src = "";
+
+    container.innerHTML =
+        "";
+
 
     playerArea.style.display =
         "none";
+
+
+    currentYoutubeIndex =
+        0;
+
+    shortsScrollReady =
+        false;
 }
 
 
 /* =========================================================
    HTMLエスケープ
-   ========================================================= */
+========================================================= */
 
 function escapeHtml(text) {
 
@@ -1570,8 +1858,10 @@ function escapeHtml(text) {
             "div"
         );
 
+
     div.textContent =
         text ?? "";
+
 
     return div.innerHTML;
 }
