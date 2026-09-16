@@ -1,853 +1,640 @@
-```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>掛け算トレーニング</title>
 
 <style>
-*{
-    box-sizing:border-box;
+* {
+    box-sizing: border-box;
 }
 
 html,
-body{
-    margin:0;
-    width:100%;
-    height:100%;
-    background:#050510;
-    color:#fff;
-    font-family:Arial,"Noto Sans JP",sans-serif;
-    overflow:hidden;
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    font-family: Arial, "Noto Sans JP", sans-serif;
+    background: #050510;
+    color: white;
 }
 
-#zoomRoot{
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    transform-origin:top left;
+body {
+    overflow-x: hidden;
 }
 
-#zoomRoot::before{
-    content:"";
-    position:fixed;
-    inset:0;
+/* =========================================================
+   全体
+   ========================================================= */
+
+#zoomRoot {
+    min-height: 100vh;
+    transform-origin: top left;
+    transition: transform 0.2s ease;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================================
+   ヘッダー
+   ========================================================= */
+
+header {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
 
     background:
-        radial-gradient(
-            circle at 15% 20%,
-            rgba(0,255,255,.13),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 85% 75%,
-            rgba(255,0,255,.13),
-            transparent 30%
+        linear-gradient(
+            90deg,
+            rgba(0,255,255,0.12),
+            rgba(255,0,255,0.12)
         );
 
-    pointer-events:none;
-}
-
-.page{
-    width:100%;
-    height:100%;
-    display:flex;
-    flex-direction:column;
-}
-
-header{
-    height:68px;
-    flex-shrink:0;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:0 20px 0 28px;
-
-    background:rgba(5,5,16,.92);
-
-    border-bottom:1px solid rgba(0,255,255,.45);
-
+    border-bottom: 1px solid #00ffff;
     box-shadow:
-        0 0 20px rgba(0,255,255,.15);
-
-    gap:15px;
+        0 0 15px rgba(0,255,255,0.35);
 }
 
-.logo{
-    font-size:22px;
-    font-weight:900;
-    letter-spacing:2px;
-
-    color:#00ffff;
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00ffff;
 
     text-shadow:
         0 0 5px #00ffff,
-        0 0 15px #00ffff,
-        0 0 30px #00ffff;
+        0 0 15px #00ffff;
 }
 
-.headerRight{
-    display:flex;
-    align-items:center;
-    gap:14px;
+.status {
+    font-size: 13px;
+    color: #aaa;
 }
 
-.status{
-    font-size:11px;
-    color:#ff00ff;
+/* =========================================================
+   ズーム
+   ========================================================= */
 
-    text-shadow:
-        0 0 10px #ff00ff;
+.zoom-controls {
+    display: flex;
+    gap: 5px;
 }
 
-.zoomControls{
-    display:flex;
-    align-items:center;
-    gap:5px;
+.zoom-controls button {
+    width: 35px;
+    height: 35px;
+
+    border: 1px solid #00ffff;
+    background: #080820;
+    color: #00ffff;
+
+    cursor: pointer;
+    border-radius: 5px;
 }
 
-.zoomControls button{
-    min-width:32px;
-    padding:6px 9px;
-    font-size:13px;
+.zoom-controls button:hover {
+    background: #00ffff;
+    color: #000;
 }
 
-#zoomValue{
-    min-width:45px;
-    text-align:center;
+/* =========================================================
+   メイン
+   ========================================================= */
 
-    color:#00ffff;
+main {
+    flex: 1;
 
-    font-size:12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+}
+
+.training-box {
+    width: min(600px, 95vw);
+
+    padding: 35px;
+
+    border: 1px solid #00ffff;
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,255,255,0.07),
+            rgba(255,0,255,0.07)
+        );
+
+    box-shadow:
+        0 0 20px rgba(0,255,255,0.25),
+        inset 0 0 20px rgba(255,0,255,0.08);
+
+    text-align: center;
+}
+
+.training-box h1 {
+    margin-top: 0;
+
+    color: #00ffff;
 
     text-shadow:
         0 0 8px #00ffff;
 }
 
-main{
-    flex:1;
+.question {
+    margin: 30px 0;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    font-size: 45px;
+    font-weight: bold;
 
-    padding:15px;
-
-    overflow:auto;
-}
-
-.card{
-    width:min(600px,94vw);
-
-    padding:28px;
-
-    text-align:center;
-
-    background:rgba(8,8,25,.9);
-
-    border:1px solid #00ffff;
-
-    border-radius:20px;
-
-    box-shadow:
-        0 0 10px #00ffff,
-        0 0 35px rgba(0,255,255,.2),
-        inset 0 0 25px rgba(0,255,255,.05);
-}
-
-h1{
-    margin:0 0 8px;
-
-    font-size:34px;
-
-    color:#00ffff;
+    color: white;
 
     text-shadow:
-        0 0 5px #00ffff,
-        0 0 20px #00ffff;
+        0 0 10px #ffffff;
 }
 
-.subtitle{
-    color:#999;
-    margin-bottom:18px;
+.answer-input {
+    width: 100%;
+    padding: 15px;
+
+    font-size: 25px;
+    text-align: center;
+
+    border-radius: 8px;
+    border: 1px solid #00ffff;
+
+    background: #050510;
+    color: white;
+
+    outline: none;
 }
 
-.question{
-    margin:15px;
+.answer-input:focus {
+    box-shadow:
+        0 0 15px rgba(0,255,255,0.5);
+}
 
-    font-size:52px;
-    font-weight:900;
+.action-button {
+    margin-top: 20px;
+
+    padding: 13px 30px;
+
+    border: 1px solid #ff00ff;
+    border-radius: 8px;
+
+    background: #100518;
+    color: #ff00ff;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.action-button:hover {
+    background: #ff00ff;
+    color: #000;
+
+    box-shadow:
+        0 0 20px #ff00ff;
+}
+
+.result {
+    margin-top: 20px;
+    min-height: 30px;
+
+    font-size: 20px;
+}
+
+/* =========================================================
+   フッター
+   ========================================================= */
+
+footer {
+    padding: 15px;
+    text-align: center;
+
+    border-top: 1px solid #ff00ff;
+
+    background: #050510;
+}
+
+.about-button {
+    padding: 10px 20px;
+
+    border: 1px solid #ff00ff;
+    border-radius: 7px;
+
+    background: transparent;
+    color: #ff00ff;
+
+    cursor: pointer;
+}
+
+.about-button:hover {
+    background: #ff00ff;
+    color: black;
+
+    box-shadow:
+        0 0 15px #ff00ff;
+}
+
+/* =========================================================
+   オーバーレイ
+   ========================================================= */
+
+.overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: none;
+
+    background:
+        rgba(0,0,10,0.96);
+
+    overflow-y: auto;
+}
+
+.overlay-content {
+    width: min(1000px, 95vw);
+
+    margin: 30px auto;
+
+    padding: 30px;
+
+    border: 1px solid #00ffff;
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,255,255,0.05),
+            rgba(255,0,255,0.05)
+        );
+
+    box-shadow:
+        0 0 30px rgba(0,255,255,0.2);
+}
+
+.overlay-title {
+    color: #00ffff;
+
+    text-align: center;
 
     text-shadow:
-        0 0 8px #fff,
-        0 0 20px #00ffff;
-}
-
-.answerDisplay{
-    width:230px;
-    height:58px;
-
-    margin:0 auto 15px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border:1px solid #ff00ff;
-
-    border-radius:12px;
-
-    background:#080812;
-
-    color:white;
-
-    font-size:30px;
-    font-weight:bold;
-
-    letter-spacing:4px;
-
-    box-shadow:
-        0 0 8px #ff00ff,
-        inset 0 0 15px rgba(255,0,255,.12);
-}
-
-.answerDisplay.empty{
-    color:#555;
-    font-size:18px;
-    letter-spacing:0;
-}
-
-.keypad{
-    width:280px;
-
-    margin:auto;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:8px;
-}
-
-.key{
-    height:50px;
-
-    padding:0;
-
-    font-size:20px;
-
-    border:1px solid #00ffff;
-
-    border-radius:10px;
-
-    background:#07151a;
-
-    color:#00ffff;
-
-    box-shadow:
-        0 0 7px rgba(0,255,255,.4);
-
-    transition:.12s;
-}
-
-.key:hover{
-    background:#00ffff;
-    color:#050510;
-
-    box-shadow:
-        0 0 10px #00ffff,
-        0 0 25px #00ffff;
-}
-
-.key:active{
-    transform:scale(.95);
-}
-
-.key.delete{
-    border-color:#ff00ff;
-    color:#ff00ff;
-}
-
-.key.delete:hover{
-    background:#ff00ff;
-    color:#050510;
-}
-
-.key.clear{
-    border-color:#ff3366;
-    color:#ff3366;
-}
-
-.key.clear:hover{
-    background:#ff3366;
-    color:white;
-}
-
-.key.submit{
-    border-color:#00ff99;
-    color:#00ff99;
-}
-
-.key.submit:hover{
-    background:#00ff99;
-    color:#050510;
-
-    box-shadow:
-        0 0 10px #00ff99,
-        0 0 25px #00ff99;
-}
-
-.result{
-    min-height:28px;
-
-    margin-top:15px;
-
-    font-size:17px;
-    font-weight:bold;
-}
-
-.correct{
-    color:#00ff99;
-
-    text-shadow:
-        0 0 10px #00ff99;
-}
-
-.wrong{
-    color:#ff3366;
-
-    text-shadow:
-        0 0 10px #ff3366;
-}
-
-.score{
-    margin-top:12px;
-
-    color:#999;
-}
-
-footer{
-    height:42px;
-    flex-shrink:0;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    background:rgba(5,5,16,.95);
-
-    border-top:
-        1px solid rgba(255,0,255,.3);
-}
-
-.aboutButton{
-    border:0;
-
-    padding:5px 10px;
-
-    background:transparent;
-
-    color:#777;
-
-    font-size:11px;
-
-    box-shadow:none;
-}
-
-.aboutButton:hover{
-    background:transparent;
-
-    color:#00ffff;
-
-    box-shadow:none;
-
-    transform:none;
-}
-
-.overlay{
-    position:absolute;
-
-    left:0;
-    top:0;
-
-    width:100%;
-    height:100%;
-
-    display:none;
-
-    flex-direction:column;
-
-    background:#050510;
-
-    z-index:100;
-}
-
-.overlay.show{
-    display:flex;
-}
-
-.overlayHeader{
-    height:60px;
-    flex-shrink:0;
-
-    display:flex;
-    align-items:center;
-
-    gap:15px;
-
-    padding:0 15px;
-
-    background:#070716;
-
-    border-bottom:1px solid #00ffff;
-
-    box-shadow:
-        0 0 20px rgba(0,255,255,.2);
-}
-
-.back{
-    color:#ff00ff;
-    border-color:#ff00ff;
-}
-
-.back:hover{
-    background:#ff00ff;
-
-    box-shadow:
-        0 0 25px #ff00ff;
-}
-
-.overlayTitle{
-    color:#00ffff;
-
-    font-weight:bold;
-}
-
-.aboutContent{
-    flex:1;
-
-    overflow:auto;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    padding:30px;
-}
-
-.aboutBox{
-    width:min(650px,95vw);
-
-    padding:35px;
-
-    background:#09091b;
-
-    border:1px solid #ff00ff;
-
-    border-radius:18px;
-
-    box-shadow:
-        0 0 12px #ff00ff,
-        0 0 40px rgba(255,0,255,.15);
-}
-
-.aboutBox h2{
-    margin-top:0;
-
-    color:#ff00ff;
-
-    text-shadow:
-        0 0 12px #ff00ff;
-}
-
-.aboutBox p{
-    color:#ccc;
-
-    line-height:1.9;
-}
-
-
-/* =================================
-   検索
-================================= */
-
-.searchTabs{
-    height:45px;
-    flex-shrink:0;
-
-    display:flex;
-
-    background:#080812;
-
-    border-bottom:1px solid #00ffff;
-}
-
-.searchTab{
-    flex:1;
-
-    border:0;
-
-    border-right:1px solid rgba(0,255,255,.25);
-
-    border-radius:0;
-
-    background:#080812;
-
-    color:#777;
-
-    box-shadow:none;
-
-    font-size:14px;
-}
-
-.searchTab:hover{
-    background:#101025;
-    color:#00ffff;
-
-    box-shadow:none;
-    transform:none;
-}
-
-.searchTab.active{
-    background:#00ffff;
-    color:#050510;
-
-    box-shadow:
         0 0 10px #00ffff;
 }
 
-.searchArea{
-    flex:1;
+.close-button {
+    float: right;
 
-    min-height:0;
+    width: 35px;
+    height: 35px;
 
-    display:flex;
+    border: 1px solid #ff00ff;
+    border-radius: 5px;
 
-    flex-direction:column;
+    background: transparent;
+    color: #ff00ff;
 
-    background:white;
+    cursor: pointer;
 }
 
-.searchBar{
-    height:55px;
-    flex-shrink:0;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    padding:8px 12px;
-
-    background:#080812;
-
-    border-bottom:1px solid #00ffff;
+.close-button:hover {
+    background: #ff00ff;
+    color: #000;
 }
 
-.searchInput{
-    flex:1;
+/* =========================================================
+   検索タブ
+   ========================================================= */
 
-    height:38px;
+.search-tabs {
+    display: flex;
+    gap: 10px;
 
-    padding:0 14px;
+    margin-bottom: 20px;
+}
 
-    border:1px solid #00ffff;
+.search-tab {
+    flex: 1;
 
-    border-radius:8px;
+    padding: 13px;
 
-    outline:none;
+    border: 1px solid #00ffff;
+    border-radius: 7px;
 
-    background:#050510;
+    background: #070715;
+    color: #00ffff;
 
-    color:white;
+    cursor: pointer;
 
-    font-size:15px;
+    font-weight: bold;
+}
+
+.search-tab.active {
+    background: #00ffff;
+    color: #000;
 
     box-shadow:
-        0 0 8px rgba(0,255,255,.3);
+        0 0 15px #00ffff;
 }
 
-.searchInput:focus{
+/* =========================================================
+   Google
+   ========================================================= */
+
+.search-panel {
+    display: none;
+}
+
+.search-panel.active {
+    display: block;
+}
+
+.search-input-area {
+    display: flex;
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.search-input {
+    flex: 1;
+
+    padding: 13px;
+
+    border: 1px solid #00ffff;
+    border-radius: 7px;
+
+    background: #050510;
+    color: white;
+
+    outline: none;
+
+    font-size: 16px;
+}
+
+.search-input:focus {
     box-shadow:
-        0 0 10px #00ffff,
-        0 0 25px rgba(0,255,255,.3);
+        0 0 15px rgba(0,255,255,0.4);
 }
 
-.searchButton{
-    height:38px;
+.search-button {
+    padding: 13px 20px;
 
-    padding:0 18px;
+    border: 1px solid #00ffff;
+    border-radius: 7px;
+
+    background: #071515;
+    color: #00ffff;
+
+    cursor: pointer;
+
+    font-weight: bold;
 }
 
-.googleFrame{
-    flex:1;
-
-    width:100%;
-    height:100%;
-
-    border:0;
-
-    background:white;
+.search-button:hover {
+    background: #00ffff;
+    color: #000;
 }
 
+/* =========================================================
+   Google iframe
+   ========================================================= */
 
-/* =================================
+.google-frame {
+    width: 100%;
+    height: 600px;
+
+    border: 1px solid #333;
+    border-radius: 10px;
+
+    background: white;
+}
+
+/* =========================================================
    YouTube
-================================= */
+   ========================================================= */
 
-.youtubeArea{
-    flex:1;
-
-    min-height:0;
-
-    display:none;
-
-    flex-direction:column;
-
-    background:#050510;
-}
-
-.youtubeArea.show{
-    display:flex;
-}
-
-.youtubeSearchBar{
-    display:flex;
-
-    gap:8px;
-
-    padding:10px;
-
-    flex-shrink:0;
-
-    border-bottom:1px solid #ff00ff;
-
-    background:#080812;
-}
-
-.youtubeInput{
-    flex:1;
-
-    height:38px;
-
-    padding:0 12px;
-
-    border:1px solid #ff00ff;
-
-    border-radius:8px;
-
-    outline:none;
-
-    background:#050510;
-
-    color:white;
-
-    font-size:15px;
-}
-
-.youtubeInput:focus{
-    box-shadow:
-        0 0 10px #ff00ff,
-        0 0 25px rgba(255,0,255,.3);
-}
-
-.youtubeButton{
-    height:38px;
-
-    padding:0 18px;
-
-    border-color:#ff00ff;
-    color:#ff00ff;
-}
-
-.youtubeButton:hover{
-    background:#ff00ff;
-    color:#050510;
-}
-
-.youtubeResults{
-    flex:1;
-
-    min-height:0;
-
-    overflow:auto;
-
-    padding:15px;
-
-    display:grid;
+.youtube-results {
+    display: grid;
 
     grid-template-columns:
-        repeat(auto-fill,minmax(240px,1fr));
+        repeat(
+            auto-fill,
+            minmax(280px, 1fr)
+        );
 
-    gap:15px;
-
-    align-content:start;
+    gap: 15px;
 }
 
-.youtubeResult{
-    cursor:pointer;
+.youtube-result {
+    overflow: hidden;
 
-    background:#09091b;
+    border: 1px solid #333;
+    border-radius: 10px;
 
-    border:1px solid rgba(255,0,255,.45);
+    background: #090914;
 
-    border-radius:12px;
+    cursor: pointer;
 
-    overflow:hidden;
-
-    transition:.15s;
+    transition:
+        transform 0.15s,
+        border-color 0.15s,
+        box-shadow 0.15s;
 }
 
-.youtubeResult:hover{
-    transform:translateY(-3px);
+.youtube-result:hover {
+    transform: translateY(-3px);
 
-    border-color:#ff00ff;
+    border-color: #ff00ff;
 
     box-shadow:
-        0 0 10px #ff00ff,
-        0 0 25px rgba(255,0,255,.2);
+        0 0 15px rgba(255,0,255,0.3);
 }
 
-.youtubeThumbnail{
-    width:100%;
+.youtube-thumbnail {
+    width: 100%;
 
-    aspect-ratio:16 / 9;
+    display: block;
 
-    object-fit:cover;
+    aspect-ratio: 16 / 9;
 
-    display:block;
+    object-fit: cover;
 }
 
-.youtubeResultTitle{
-    padding:10px;
-
-    font-size:13px;
-
-    line-height:1.5;
-
-    color:#fff;
+.youtube-info {
+    padding: 12px;
 }
 
-.youtubeMessage{
-    grid-column:1 / -1;
+.youtube-title {
+    font-size: 16px;
+    font-weight: bold;
 
-    text-align:center;
+    line-height: 1.4;
 
-    color:#777;
+    color: white;
 
-    padding:30px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
 }
 
-.youtubePlayerArea{
-    display:none;
+.youtube-channel {
+    margin-top: 8px;
 
-    flex:1;
+    font-size: 13px;
 
-    min-height:0;
-
-    flex-direction:column;
+    color: #00ffff;
 }
 
-.youtubePlayerArea.show{
-    display:flex;
+.youtube-date {
+    margin-top: 5px;
+
+    font-size: 12px;
+
+    color: #888;
 }
 
-.youtubePlayer{
-    flex:1;
+.youtube-message {
+    padding: 30px;
 
-    width:100%;
+    text-align: center;
 
-    border:0;
-
-    background:#000;
+    color: #aaa;
 }
 
-.youtubePlayerBar{
-    flex-shrink:0;
+/* =========================================================
+   YouTubeプレイヤー
+   ========================================================= */
 
-    display:flex;
+#youtubePlayerArea {
+    display: none;
 
-    align-items:center;
-
-    justify-content:space-between;
-
-    gap:10px;
-
-    padding:8px 12px;
-
-    background:#080812;
-
-    border-top:1px solid #ff00ff;
-
-    color:#777;
-
-    font-size:11px;
+    margin-top: 25px;
 }
 
-.youtubeBackButton{
-    color:#ff00ff;
+.player-title {
+    margin-bottom: 10px;
 
-    border-color:#ff00ff;
+    color: #ff00ff;
+
+    font-weight: bold;
 }
 
-@media(max-width:600px){
+.youtube-player-wrapper {
+    position: relative;
 
-    header{
-        height:62px;
+    width: 100%;
 
-        padding:0 10px;
+    aspect-ratio: 16 / 9;
+
+    background: black;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    border: 1px solid #ff00ff;
+
+    box-shadow:
+        0 0 20px rgba(255,0,255,0.25);
+}
+
+.youtube-player {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    left: 0;
+    top: 0;
+
+    border: 0;
+}
+
+.player-close {
+    margin-top: 10px;
+
+    padding: 8px 15px;
+
+    border: 1px solid #ff00ff;
+    border-radius: 6px;
+
+    background: transparent;
+    color: #ff00ff;
+
+    cursor: pointer;
+}
+
+.player-close:hover {
+    background: #ff00ff;
+    color: #000;
+}
+
+/* =========================================================
+   スマホ
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    header {
+        padding: 0 12px;
     }
 
-    .logo{
-        font-size:16px;
+    .logo {
+        font-size: 18px;
     }
 
-    .status{
-        display:none;
+    .status {
+        display: none;
     }
 
-    .headerRight{
-        gap:5px;
+    main {
+        padding: 15px;
     }
 
-    .zoomControls button{
-        padding:5px 8px;
+    .training-box {
+        padding: 20px;
     }
 
-    .card{
-        padding:20px 12px;
+    .question {
+        font-size: 35px;
     }
 
-    h1{
-        font-size:27px;
+    .overlay-content {
+        margin: 10px auto;
+        padding: 15px;
     }
 
-    .question{
-        font-size:45px;
+    .search-input-area {
+        flex-direction: column;
     }
 
-    .keypad{
-        width:260px;
+    .youtube-results {
+        grid-template-columns: 1fr;
     }
 
-    .aboutContent{
-        padding:15px;
-    }
-
-    .aboutBox{
-        padding:25px;
-    }
-
-    .youtubeResults{
-        grid-template-columns:1fr;
+    .google-frame {
+        height: 500px;
     }
 }
 </style>
@@ -857,686 +644,596 @@ footer{
 
 <div id="zoomRoot">
 
-<div class="page">
+<div class="container">
+
+<!-- =======================================================
+     HEADER
+======================================================= -->
 
 <header>
 
-<div class="logo">
-掛け算トレーニング
-</div>
+    <div class="logo">
+        掛け算トレーニング
+    </div>
 
-<div class="headerRight">
+    <div class="status">
+        × multiplication training
+    </div>
 
-<div class="status">
-● TRAINING MODE
-</div>
-
-<div class="zoomControls">
-
-<button onclick="zoomOut()">
-−
-</button>
-
-<span id="zoomValue">
-100%
-</span>
-
-<button onclick="zoomIn()">
-＋
-</button>
-
-<button onclick="zoomReset()">
-リセット
-</button>
-
-</div>
-
-</div>
+    <div class="zoom-controls">
+        <button onclick="changeZoom(-0.1)">−</button>
+        <button onclick="resetZoom()">100%</button>
+        <button onclick="changeZoom(0.1)">＋</button>
+    </div>
 
 </header>
 
 
+<!-- =======================================================
+     MAIN
+======================================================= -->
+
 <main>
 
-<div class="card">
+<div class="training-box">
 
-<h1>
-掛け算練習
-</h1>
+    <h1>掛け算トレーニング</h1>
 
-<div class="subtitle">
-正解するまで次の問題には進みません
-</div>
+    <div
+        class="question"
+        id="question"
+    >
+        1 × 1 = ?
+    </div>
 
-<div
-class="question"
-id="question">
-？ × ？
-</div>
+    <input
+        id="answer"
+        class="answer-input"
+        type="number"
+        placeholder="答えを入力"
+        autocomplete="off"
+    >
 
-<div
-id="answerDisplay"
-class="answerDisplay empty">
+    <button
+        class="action-button"
+        onclick="checkAnswer()"
+    >
+        回答する
+    </button>
 
-答えを入力
-
-</div>
-
-<div class="keypad">
-
-<button class="key" onclick="pressNumber(1)">1</button>
-<button class="key" onclick="pressNumber(2)">2</button>
-<button class="key" onclick="pressNumber(3)">3</button>
-
-<button class="key" onclick="pressNumber(4)">4</button>
-<button class="key" onclick="pressNumber(5)">5</button>
-<button class="key" onclick="pressNumber(6)">6</button>
-
-<button class="key" onclick="pressNumber(7)">7</button>
-<button class="key" onclick="pressNumber(8)">8</button>
-<button class="key" onclick="pressNumber(9)">9</button>
-
-<button class="key clear" onclick="clearAnswer()">C</button>
-<button class="key" onclick="pressNumber(0)">0</button>
-<button class="key delete" onclick="deleteNumber()">⌫</button>
-
-<button
-class="key submit"
-style="grid-column:1 / 4"
-onclick="checkAnswer()">
-
-✓ 回答する
-
-</button>
-
-</div>
-
-<div id="result" class="result"></div>
-
-<div class="score">
-
-正解：
-<span id="score">0</span>
-
-　
-
-問題数：
-<span id="total">0</span>
-
-</div>
+    <div
+        class="result"
+        id="result"
+    ></div>
 
 </div>
 
 </main>
 
 
+<!-- =======================================================
+     FOOTER
+======================================================= -->
+
 <footer>
 
-<button
-class="aboutButton"
-onclick="aboutClick()">
-
-このサイトについて
-
-</button>
+    <button
+        class="about-button"
+        onclick="aboutButtonClicked()"
+    >
+        このサイトについて
+    </button>
 
 </footer>
 
 </div>
+</div>
 
 
-<!-- =========================
-     このサイトについて
-========================= -->
+<!-- =======================================================
+     ABOUT OVERLAY
+======================================================= -->
 
 <div
-id="aboutPage"
-class="overlay">
+    id="aboutOverlay"
+    class="overlay"
+>
 
-<div class="overlayHeader">
+    <div class="overlay-content">
 
-<button
-class="back"
-onclick="goBack()">
+        <button
+            class="close-button"
+            onclick="closeOverlay()"
+        >
+            ×
+        </button>
 
-← 戻る
+        <h1 class="overlay-title">
+            このサイトについて
+        </h1>
 
-</button>
+        <p>
+            このサイトは掛け算の練習をするための
+            トレーニングサイトです。
+        </p>
 
-<div class="overlayTitle">
-このサイトについて
-</div>
+        <p>
+            フッターのボタンを複数回押すと、
+            検索ページを開くことができます。
+        </p>
 
-</div>
-
-<div class="aboutContent">
-
-<div class="aboutBox">
-
-<h2>
-このサイトについて
-</h2>
-
-<p>
-このサイトでは、1桁の掛け算を中心とした
-練習問題に取り組むことができます。
-</p>
-
-<p>
-問題は自動的に生成され、
-回答するたびに正解数と問題数が記録されます。
-</p>
-
-<p>
-短い時間でも繰り返し練習できるよう、
-シンプルで使いやすい構成になっています。
-</p>
-
-<p>
-掛け算の計算力を身につけるために、
-毎日の練習にご利用ください。
-</p>
-
-</div>
-
-</div>
+    </div>
 
 </div>
 
 
-<!-- =========================
-     検索
-========================= -->
+<!-- =======================================================
+     SEARCH OVERLAY
+======================================================= -->
 
 <div
-id="searchPage"
-class="overlay">
+    id="searchOverlay"
+    class="overlay"
+>
 
-<div class="overlayHeader">
+    <div class="overlay-content">
 
-<button
-class="back"
-onclick="goBack()">
+        <button
+            class="close-button"
+            onclick="closeOverlay()"
+        >
+            ×
+        </button>
 
-← 戻る
-
-</button>
-
-<div class="overlayTitle">
-検索
-</div>
-
-</div>
+        <h1 class="overlay-title">
+            検索
+        </h1>
 
 
-<!-- Google / YouTube -->
+        <!-- タブ -->
 
-<div class="searchTabs">
+        <div class="search-tabs">
 
-<button
-id="googleTab"
-class="searchTab active"
-onclick="switchSearch('google')">
+            <button
+                id="googleTab"
+                class="search-tab active"
+                onclick="switchSearch('google')"
+            >
+                Google
+            </button>
 
-Google
+            <button
+                id="youtubeTab"
+                class="search-tab"
+                onclick="switchSearch('youtube')"
+            >
+                YouTube
+            </button>
 
-</button>
-
-<button
-id="youtubeTab"
-class="searchTab"
-onclick="switchSearch('youtube')">
-
-YouTube
-
-</button>
-
-</div>
+        </div>
 
 
-<!-- =========================
-     Google
-========================= -->
+        <!-- =================================================
+             GOOGLE
+        ================================================== -->
 
-<div
-id="googleArea"
-class="searchArea">
+        <div
+            id="googlePanel"
+            class="search-panel active"
+        >
 
-<div class="searchBar">
+            <div class="search-input-area">
 
-<input
-id="searchInput"
-class="searchInput"
-type="text"
-placeholder="Googleで検索">
+                <input
+                    id="googleSearchInput"
+                    class="search-input"
+                    type="text"
+                    placeholder="Googleで検索..."
+                    onkeydown="if(event.key === 'Enter') googleSearch()"
+                >
 
-<button
-class="searchButton"
-onclick="googleSearch()">
+                <button
+                    class="search-button"
+                    onclick="googleSearch()"
+                >
+                    検索
+                </button>
 
-検索
+            </div>
 
-</button>
+            <iframe
+                id="googleFrame"
+                class="google-frame"
+                src="https://www.google.com/search?igu=1"
+                title="Google検索"
+            ></iframe>
 
-</div>
-
-<iframe
-id="googleFrame"
-class="googleFrame"
-src="https://www.google.com/search?igu=1"
-title="Google検索">
-</iframe>
-
-</div>
-
-
-<!-- =========================
-     YouTube
-========================= -->
-
-<div
-id="youtubeArea"
-class="youtubeArea">
-
-<div class="youtubeSearchBar">
-
-<input
-id="youtubeInput"
-class="youtubeInput"
-type="text"
-placeholder="YouTubeで検索">
-
-<button
-class="youtubeButton"
-onclick="youtubeSearch()">
-
-検索
-
-</button>
-
-</div>
+        </div>
 
 
-<!-- 検索結果 -->
+        <!-- =================================================
+             YOUTUBE
+        ================================================== -->
 
-<div
-id="youtubeResults"
-class="youtubeResults">
+        <div
+            id="youtubePanel"
+            class="search-panel"
+        >
 
-<div class="youtubeMessage">
-YouTubeで検索してください
-</div>
+            <div class="search-input-area">
 
-</div>
+                <input
+                    id="youtubeSearchInput"
+                    class="search-input"
+                    type="text"
+                    placeholder="YouTubeで検索..."
+                    onkeydown="if(event.key === 'Enter') youtubeSearch()"
+                >
+
+                <button
+                    class="search-button"
+                    onclick="youtubeSearch()"
+                >
+                    検索
+                </button>
+
+            </div>
 
 
-<!-- プレイヤー -->
+            <!-- プレイヤー -->
 
-<div
-id="youtubePlayerArea"
-class="youtubePlayerArea">
+            <div
+                id="youtubePlayerArea"
+            >
 
-<iframe
-id="youtubePlayer"
-class="youtubePlayer"
-src="about:blank"
-allow="autoplay; encrypted-media; picture-in-picture"
-allowfullscreen
-title="YouTube">
-</iframe>
+                <div class="player-title">
+                    ▶ 再生中
+                </div>
 
-<div class="youtubePlayerBar">
+                <div class="youtube-player-wrapper">
 
-<span id="youtubeEmbedUrl">
-</span>
+                    <iframe
+                        id="youtubePlayer"
+                        class="youtube-player"
+                        allow="
+                            autoplay;
+                            encrypted-media;
+                            picture-in-picture;
+                            fullscreen
+                        "
+                        allowfullscreen
+                    ></iframe>
 
-<button
-class="youtubeBackButton"
-onclick="closeYoutubePlayer()">
+                </div>
 
-← 検索結果に戻る
+                <button
+                    class="player-close"
+                    onclick="closeYoutubePlayer()"
+                >
+                    プレイヤーを閉じる
+                </button>
 
-</button>
+            </div>
 
-</div>
 
-</div>
+            <!-- 検索結果 -->
 
-</div>
+            <div
+                id="youtubeResults"
+                class="youtube-results"
+            >
 
-</div>
+                <div class="youtube-message">
+                    YouTubeで検索してください。
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
 
 <script>
 
-/* ==================================
+/* =========================================================
+   YouTube API設定
+   ========================================================= */
+
+/*
+    ↓↓↓ ここに自分のAPIキーを入れる ↓↓↓
+*/
+
+const YOUTUBE_API_KEY =
+    "YOUR_YOUTUBE_API_KEY";
+
+
+/* =========================================================
    掛け算
-================================== */
+   ========================================================= */
 
-let a = 0;
-let b = 0;
+let numberA = 1;
+let numberB = 1;
 
-let answer = "";
+function newQuestion() {
 
-let score = 0;
-let total = 0;
-
-
-function newQuestion(){
-
-    a =
+    numberA =
         Math.floor(Math.random() * 9) + 1;
 
-    b =
+    numberB =
         Math.floor(Math.random() * 9) + 1;
 
-    answer = "";
-
-    document
-        .getElementById("question")
+    document.getElementById("question")
         .textContent =
-        a + " × " + b;
+        `${numberA} × ${numberB} = ?`;
 
-    updateDisplay();
+    document.getElementById("answer")
+        .value = "";
 
-    document
-        .getElementById("result")
+    document.getElementById("result")
         .textContent = "";
 }
 
 
-function pressNumber(number){
+function checkAnswer() {
 
-    if(answer.length >= 3){
-        return;
-    }
-
-    answer += number;
-
-    updateDisplay();
-}
-
-
-function deleteNumber(){
-
-    answer =
-        answer.slice(0,-1);
-
-    updateDisplay();
-}
-
-
-function clearAnswer(){
-
-    answer = "";
-
-    updateDisplay();
-}
-
-
-function updateDisplay(){
-
-    const display =
-        document.getElementById(
-            "answerDisplay"
+    const answer =
+        Number(
+            document.getElementById("answer").value
         );
 
-    if(answer === ""){
+    const correct =
+        numberA * numberB;
 
-        display.textContent =
-            "答えを入力";
+    const result =
+        document.getElementById("result");
 
-        display.classList.add(
-            "empty"
-        );
+    if (answer === correct) {
 
-    }else{
+        result.textContent =
+            "⭕ 正解！";
 
-        display.textContent =
-            answer;
-
-        display.classList.remove(
-            "empty"
-        );
-
-    }
-}
-
-
-function checkAnswer(){
-
-    if(answer === ""){
-        return;
-    }
-
-    const value =
-        Number(answer);
-
-    if(value === a * b){
-
-        score++;
-        total++;
-
-        document
-            .getElementById("result")
-            .innerHTML =
-            '<span class="correct">' +
-            '✓ 正解！ 次の問題へ！' +
-            '</span>';
-
-        document
-            .getElementById("score")
-            .textContent =
-            score;
-
-        document
-            .getElementById("total")
-            .textContent =
-            total;
+        result.style.color =
+            "#00ffff";
 
         setTimeout(
-            function(){
-                newQuestion();
-            },
-            500
+            newQuestion,
+            600
         );
 
-    }else{
+    } else {
 
-        total++;
+        result.textContent =
+            "❌ 不正解！";
 
-        document
-            .getElementById("result")
-            .innerHTML =
-            '<span class="wrong">' +
-            '✕ 不正解！ もう一度！' +
-            '</span>';
-
-        document
-            .getElementById("total")
-            .textContent =
-            total;
-
-        setTimeout(
-            function(){
-                clearAnswer();
-            },
-            400
-        );
+        result.style.color =
+            "#ff00ff";
     }
 }
 
 
-/* ==================================
-   このサイトについて
-================================== */
+/* Enterキーでも回答 */
 
-let aboutCount = 0;
+document
+    .getElementById("answer")
+    .addEventListener(
+        "keydown",
+        function(event) {
 
-function aboutClick(){
+            if (event.key === "Enter") {
+                checkAnswer();
+            }
 
-    aboutCount++;
-
-    if(aboutCount <= 2){
-
-        showPage("aboutPage");
-
-    }else{
-
-        showPage("searchPage");
-
-    }
-}
-
-
-/* ==================================
-   画面切り替え
-================================== */
-
-function showPage(id){
-
-    document
-        .getElementById("aboutPage")
-        .classList.remove("show");
-
-    document
-        .getElementById("searchPage")
-        .classList.remove("show");
-
-    document
-        .getElementById(id)
-        .classList.add("show");
-
-    history.pushState(
-        {
-            page:id
-        },
-        "",
-        "#" + id
+        }
     );
+
+
+newQuestion();
+
+
+/* =========================================================
+   ズーム
+   ========================================================= */
+
+let zoom =
+    1;
+
+function changeZoom(amount) {
+
+    zoom += amount;
+
+    if (zoom < 0.5)
+        zoom = 0.5;
+
+    if (zoom > 2)
+        zoom = 2;
+
+    document.getElementById("zoomRoot")
+        .style.transform =
+        `scale(${zoom})`;
 }
 
 
-function goBack(){
+function resetZoom() {
 
-    history.back();
+    zoom = 1;
 
+    document.getElementById("zoomRoot")
+        .style.transform =
+        "scale(1)";
 }
 
 
-window.addEventListener(
-    "popstate",
-    function(){
+/* =========================================================
+   Aboutボタン
+   ========================================================= */
 
-        document
-            .getElementById("aboutPage")
-            .classList.remove("show");
+let aboutClickCount =
+    0;
 
-        document
-            .getElementById("searchPage")
-            .classList.remove("show");
+function aboutButtonClicked() {
+
+    aboutClickCount++;
+
+    /*
+       1回目・2回目
+       → About
+
+       3回目
+       → 検索
+    */
+
+    if (aboutClickCount >= 3) {
+
+        aboutClickCount = 0;
+
+        openSearch();
+
+    } else {
+
+        document.getElementById(
+            "aboutOverlay"
+        ).style.display = "block";
 
     }
-);
+}
 
 
-/* ==================================
-   Google
-================================== */
+/* =========================================================
+   Overlay
+   ========================================================= */
 
-function googleSearch(){
+function closeOverlay() {
+
+    document.getElementById(
+        "aboutOverlay"
+    ).style.display = "none";
+
+    document.getElementById(
+        "searchOverlay"
+    ).style.display = "none";
+}
+
+
+function openSearch() {
+
+    document.getElementById(
+        "aboutOverlay"
+    ).style.display = "none";
+
+    document.getElementById(
+        "searchOverlay"
+    ).style.display = "block";
+}
+
+
+/* =========================================================
+   検索タブ
+   ========================================================= */
+
+function switchSearch(type) {
+
+    const googlePanel =
+        document.getElementById(
+            "googlePanel"
+        );
+
+    const youtubePanel =
+        document.getElementById(
+            "youtubePanel"
+        );
+
+    const googleTab =
+        document.getElementById(
+            "googleTab"
+        );
+
+    const youtubeTab =
+        document.getElementById(
+            "youtubeTab"
+        );
+
+
+    if (type === "google") {
+
+        googlePanel.classList.add(
+            "active"
+        );
+
+        youtubePanel.classList.remove(
+            "active"
+        );
+
+        googleTab.classList.add(
+            "active"
+        );
+
+        youtubeTab.classList.remove(
+            "active"
+        );
+
+    } else {
+
+        googlePanel.classList.remove(
+            "active"
+        );
+
+        youtubePanel.classList.add(
+            "active"
+        );
+
+        googleTab.classList.remove(
+            "active"
+        );
+
+        youtubeTab.classList.add(
+            "active"
+        );
+
+    }
+}
+
+
+/* =========================================================
+   Google検索
+   ========================================================= */
+
+function googleSearch() {
 
     const query =
-        document
-            .getElementById("searchInput")
-            .value
-            .trim();
+        document.getElementById(
+            "googleSearchInput"
+        ).value.trim();
 
-    if(query === ""){
+    if (!query)
         return;
-    }
 
     const url =
         "https://www.google.com/search?igu=1&q=" +
         encodeURIComponent(query);
 
-    document
-        .getElementById("googleFrame")
-        .src = url;
+    document.getElementById(
+        "googleFrame"
+    ).src = url;
 }
 
 
-/* ==================================
-   検索切り替え
-================================== */
+/* =========================================================
+   YouTube検索
+   ========================================================= */
 
-function switchSearch(mode){
-
-    const googleArea =
-        document.getElementById("googleArea");
-
-    const youtubeArea =
-        document.getElementById("youtubeArea");
-
-    const googleTab =
-        document.getElementById("googleTab");
-
-    const youtubeTab =
-        document.getElementById("youtubeTab");
-
-
-    if(mode === "google"){
-
-        googleArea.style.display = "flex";
-
-        youtubeArea.classList.remove("show");
-
-        googleTab.classList.add("active");
-
-        youtubeTab.classList.remove("active");
-
-    }else{
-
-        googleArea.style.display = "none";
-
-        youtubeArea.classList.add("show");
-
-        googleTab.classList.remove("active");
-
-        youtubeTab.classList.add("active");
-
-    }
-}
-
-
-/* ==================================
-   YouTube API
-================================== */
-
-
-/*
-   ここにYouTube Data API v3の
-   APIキーを入れる
-*/
-
-const YOUTUBE_API_KEY =
-    "AIzaSyAqsyHN0bRs_jzBaDQfA84DgTsYGuSOy-A";
-
-
-async function youtubeSearch(){
+async function youtubeSearch() {
 
     const query =
-        document
-            .getElementById("youtubeInput")
-            .value
-            .trim();
+        document.getElementById(
+            "youtubeSearchInput"
+        ).value.trim();
 
 
-    if(query === ""){
+    if (!query)
         return;
-    }
 
 
     const results =
@@ -1545,28 +1242,55 @@ async function youtubeSearch(){
         );
 
 
-    results.innerHTML =
-        '<div class="youtubeMessage">' +
-        'YouTubeを検索中...' +
-        '</div>';
+    results.innerHTML = `
+        <div class="youtube-message">
+            YouTubeを検索中...
+        </div>
+    `;
 
 
     /*
-       YouTube Data API v3
+       APIキー未設定チェック
     */
 
-    const url =
-        "https://www.googleapis.com/youtube/v3/search" +
-        "?part=snippet" +
-        "&type=video" +
-        "&maxResults=20" +
-        "&q=" +
-        encodeURIComponent(query) +
-        "&key=" +
-        encodeURIComponent(YOUTUBE_API_KEY);
+    if (
+        !YOUTUBE_API_KEY ||
+        YOUTUBE_API_KEY ===
+        "AIzaSyAqsyHN0bRs_jzBaDQfA84DgTsYGuSOy-A"
+    ) {
+
+        results.innerHTML = `
+            <div class="youtube-message">
+                YouTube APIキーが設定されていません。
+                <br><br>
+                HTML内の
+                <b>YOUTUBE_API_KEY</b>
+                にAPIキーを設定してください。
+            </div>
+        `;
+
+        return;
+    }
 
 
-    try{
+    try {
+
+        /*
+           YouTube Data API v3
+        */
+
+        const url =
+            "https://www.googleapis.com/youtube/v3/search" +
+            "?part=snippet" +
+            "&type=video" +
+            "&maxResults=20" +
+            "&q=" +
+            encodeURIComponent(query) +
+            "&key=" +
+            encodeURIComponent(
+                YOUTUBE_API_KEY
+            );
+
 
         const response =
             await fetch(url);
@@ -1576,290 +1300,283 @@ async function youtubeSearch(){
             await response.json();
 
 
-        if(!response.ok){
+        /*
+           APIエラー
+        */
 
-            throw new Error(
-                data.error?.message ||
-                "YouTube APIエラー"
+        if (data.error) {
+
+            console.error(
+                data.error
             );
 
-        }
-
-
-        results.innerHTML = "";
-
-
-        if(!data.items || data.items.length === 0){
-
-            results.innerHTML =
-                '<div class="youtubeMessage">' +
-                '検索結果がありません。' +
-                '</div>';
+            results.innerHTML = `
+                <div class="youtube-message">
+                    YouTube APIエラー
+                    <br><br>
+                    ${escapeHtml(
+                        data.error.message ||
+                        "不明なエラー"
+                    )}
+                </div>
+            `;
 
             return;
         }
 
 
-        for(const item of data.items){
+        /*
+           動画なし
+        */
 
-            const videoId =
-                item.id.videoId;
+        if (
+            !data.items ||
+            data.items.length === 0
+        ) {
 
+            results.innerHTML = `
+                <div class="youtube-message">
+                    動画が見つかりませんでした。
+                </div>
+            `;
 
-            if(!videoId){
-                continue;
-            }
-
-
-            const title =
-                item.snippet.title;
-
-
-            const thumbnail =
-                item.snippet.thumbnails?.medium?.url ||
-                item.snippet.thumbnails?.default?.url;
-
-
-            const div =
-                document.createElement("div");
-
-
-            div.className =
-                "youtubeResult";
-
-
-            div.innerHTML =
-
-                '<img ' +
-                'class="youtubeThumbnail" ' +
-                'src="' +
-                thumbnail +
-                '" ' +
-                'alt="">' +
-
-                '<div class="youtubeResultTitle">' +
-                escapeHtml(title) +
-                '</div>';
-
-
-            div.onclick =
-                function(){
-
-                    playYoutube(videoId);
-
-                };
-
-
-            results.appendChild(div);
-
+            return;
         }
 
 
-    }catch(error){
+        /*
+           結果を表示
+        */
 
-        console.error(error);
-
-
-        results.innerHTML =
-            '<div class="youtubeMessage">' +
-            'YouTube検索に失敗しました。<br><br>' +
-            escapeHtml(error.message) +
-            '</div>';
-
-    }
-
-}
+        results.innerHTML = "";
 
 
-/* ==================================
-   YouTube再生
-================================== */
+        data.items.forEach(
+            item => {
 
-function playYoutube(videoId){
+                const videoId =
+                    item.id.videoId;
 
-    const embedUrl =
-        "https://www.youtube.com/embed/" +
-        videoId;
+                const title =
+                    item.snippet.title;
 
+                const description =
+                    item.snippet.description;
 
-    document
-        .getElementById("youtubePlayer")
-        .src = embedUrl;
+                const channelTitle =
+                    item.snippet.channelTitle;
 
-
-    document
-        .getElementById("youtubeEmbedUrl")
-        .textContent =
-        embedUrl;
+                const publishedAt =
+                    item.snippet.publishedAt;
 
 
-    document
-        .getElementById("youtubeResults")
-        .style.display =
-        "none";
+                /*
+                   サムネイル
+                */
+
+                const thumbnail =
+                    item.snippet.thumbnails.high?.url ||
+                    item.snippet.thumbnails.medium?.url ||
+                    item.snippet.thumbnails.default?.url;
 
 
-    document
-        .getElementById("youtubePlayerArea")
-        .classList.add("show");
+                /*
+                   日付
+                */
 
-}
-
-
-function closeYoutubePlayer(){
-
-    document
-        .getElementById("youtubePlayer")
-        .src =
-        "about:blank";
+                const date =
+                    new Date(
+                        publishedAt
+                    ).toLocaleDateString(
+                        "ja-JP"
+                    );
 
 
-    document
-        .getElementById("youtubePlayerArea")
-        .classList.remove("show");
+                /*
+                   カード作成
+                */
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "youtube-result";
 
 
-    document
-        .getElementById("youtubeResults")
-        .style.display =
-        "grid";
+                card.innerHTML = `
 
-}
+                    <img
+                        src="${escapeHtml(thumbnail)}"
+                        class="youtube-thumbnail"
+                        alt=""
+                    >
 
+                    <div class="youtube-info">
 
-/* ==================================
-   HTMLエスケープ
-================================== */
+                        <div
+                            class="youtube-title"
+                            title="${escapeHtml(title)}"
+                        >
+                            ${escapeHtml(title)}
+                        </div>
 
-function escapeHtml(text){
+                        <div class="youtube-channel">
+                            ${escapeHtml(channelTitle)}
+                        </div>
 
-    const div =
-        document.createElement("div");
+                        <div class="youtube-date">
+                            ${date}
+                        </div>
 
-    div.textContent = text;
+                    </div>
 
-    return div.innerHTML;
-
-}
-
-
-/* ==================================
-   Enter
-================================== */
-
-document
-    .getElementById("searchInput")
-    .addEventListener(
-        "keydown",
-        function(e){
-
-            if(e.key === "Enter"){
-
-                googleSearch();
-
-            }
-
-        }
-    );
+                `;
 
 
-document
-    .getElementById("youtubeInput")
-    .addEventListener(
-        "keydown",
-        function(e){
+                /*
+                   クリックで再生
+                */
 
-            if(e.key === "Enter"){
+                card.addEventListener(
+                    "click",
+                    () => {
 
-                youtubeSearch();
+                        playYoutube(
+                            videoId,
+                            title
+                        );
+
+                    }
+                );
+
+
+                results.appendChild(
+                    card
+                );
 
             }
-
-        }
-    );
-
-
-/* ==================================
-   ズーム
-================================== */
-
-let zoom = 100;
-
-
-function applyZoom(){
-
-    const root =
-        document.getElementById(
-            "zoomRoot"
         );
 
 
-    root.style.transform =
-        "scale(" +
-        (zoom / 100) +
-        ")";
+    } catch (error) {
 
+        console.error(
+            error
+        );
 
-    root.style.width =
-        (100 / (zoom / 100)) + "%";
-
-    root.style.height =
-        (100 / (zoom / 100)) + "%";
-
-
-    document
-        .getElementById("zoomValue")
-        .textContent =
-        zoom + "%";
-
-}
-
-
-function zoomIn(){
-
-    if(zoom < 200){
-
-        zoom += 10;
-
-        applyZoom();
+        results.innerHTML = `
+            <div class="youtube-message">
+                YouTubeに接続できませんでした。
+                <br>
+                ネットワーク接続を確認してください。
+            </div>
+        `;
 
     }
+}
+
+
+/* =========================================================
+   YouTube再生
+   ========================================================= */
+
+function playYoutube(
+    videoId,
+    title
+) {
+
+    const playerArea =
+        document.getElementById(
+            "youtubePlayerArea"
+        );
+
+    const player =
+        document.getElementById(
+            "youtubePlayer"
+        );
+
+    const playerTitle =
+        document.querySelector(
+            ".player-title"
+        );
+
+
+    /*
+       embed/VIDEO_ID
+    */
+
+    player.src =
+        `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
+
+    playerTitle.textContent =
+        "▶ " + title;
+
+
+    playerArea.style.display =
+        "block";
+
+
+    /*
+       プレイヤーまでスクロール
+    */
+
+    playerArea.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
 
 }
 
 
-function zoomOut(){
+/* =========================================================
+   YouTubeプレイヤーを閉じる
+   ========================================================= */
 
-    if(zoom > 50){
+function closeYoutubePlayer() {
 
-        zoom -= 10;
+    const player =
+        document.getElementById(
+            "youtubePlayer"
+        );
 
-        applyZoom();
+    const playerArea =
+        document.getElementById(
+            "youtubePlayerArea"
+        );
 
-    }
 
+    /*
+       srcを空にして再生停止
+    */
+
+    player.src = "";
+
+    playerArea.style.display =
+        "none";
 }
 
 
-function zoomReset(){
+/* =========================================================
+   HTMLエスケープ
+   ========================================================= */
 
-    zoom = 100;
+function escapeHtml(text) {
 
-    applyZoom();
+    const div =
+        document.createElement(
+            "div"
+        );
 
+    div.textContent =
+        text ?? "";
+
+    return div.innerHTML;
 }
-
-
-/* ==================================
-   初期化
-================================== */
-
-newQuestion();
-
-applyZoom();
 
 </script>
 
 </body>
 </html>
-```
