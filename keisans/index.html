@@ -22,10 +22,6 @@ body{
     overflow:hidden;
 }
 
-/* =================================
-   ズーム対象
-================================= */
-
 #zoomRoot{
     position:absolute;
     left:0;
@@ -34,11 +30,6 @@ body{
     height:100%;
     transform-origin:top left;
 }
-
-
-/* =================================
-   背景
-================================= */
 
 #zoomRoot::before{
     content:"";
@@ -59,11 +50,6 @@ body{
 
     pointer-events:none;
 }
-
-
-/* =================================
-   メイン
-================================= */
 
 .page{
     width:100%;
@@ -119,11 +105,6 @@ header{
         0 0 10px #ff00ff;
 }
 
-
-/* =================================
-   ズーム操作
-================================= */
-
 .zoomControls{
     display:flex;
     align-items:center;
@@ -147,11 +128,6 @@ header{
     text-shadow:
         0 0 8px #00ffff;
 }
-
-
-/* =================================
-   メインコンテンツ
-================================= */
 
 main{
     flex:1;
@@ -212,11 +188,6 @@ h1{
         0 0 20px #00ffff;
 }
 
-
-/* =================================
-   独自回答表示
-================================= */
-
 .answerDisplay{
     width:230px;
     height:58px;
@@ -250,11 +221,6 @@ h1{
     font-size:18px;
     letter-spacing:0;
 }
-
-
-/* =================================
-   キーパッド
-================================= */
 
 .keypad{
     width:280px;
@@ -337,11 +303,6 @@ h1{
         0 0 25px #00ff99;
 }
 
-
-/* =================================
-   結果
-================================= */
-
 .result{
     min-height:28px;
 
@@ -370,11 +331,6 @@ h1{
 
     color:#999;
 }
-
-
-/* =================================
-   フッター
-================================= */
 
 footer{
     height:42px;
@@ -414,11 +370,6 @@ footer{
     transform:none;
 }
 
-
-/* =================================
-   オーバーレイ
-================================= */
-
 .overlay{
     position:absolute;
 
@@ -441,11 +392,6 @@ footer{
     display:flex;
 }
 
-
-/* =================================
-   オーバーレイヘッダー
-================================= */
-
 .overlayHeader{
     height:60px;
     flex-shrink:0;
@@ -467,7 +413,6 @@ footer{
 
 .back{
     color:#ff00ff;
-
     border-color:#ff00ff;
 }
 
@@ -483,11 +428,6 @@ footer{
 
     font-weight:bold;
 }
-
-
-/* =================================
-   このサイトについて
-================================= */
 
 .aboutContent{
     flex:1;
@@ -535,8 +475,53 @@ footer{
 
 
 /* =================================
-   検索画面
+   検索
 ================================= */
+
+.searchTabs{
+    height:45px;
+    flex-shrink:0;
+
+    display:flex;
+
+    background:#080812;
+
+    border-bottom:1px solid #00ffff;
+}
+
+.searchTab{
+    flex:1;
+
+    border:0;
+
+    border-right:1px solid rgba(0,255,255,.25);
+
+    border-radius:0;
+
+    background:#080812;
+
+    color:#777;
+
+    box-shadow:none;
+
+    font-size:14px;
+}
+
+.searchTab:hover{
+    background:#101025;
+    color:#00ffff;
+
+    box-shadow:none;
+    transform:none;
+}
+
+.searchTab.active{
+    background:#00ffff;
+    color:#050510;
+
+    box-shadow:
+        0 0 10px #00ffff;
+}
 
 .searchArea{
     flex:1;
@@ -549,9 +534,6 @@ footer{
 
     background:white;
 }
-
-
-/* 検索バー */
 
 .searchBar{
     height:55px;
@@ -605,9 +587,6 @@ footer{
     padding:0 18px;
 }
 
-
-/* Google iframe */
-
 .googleFrame{
     flex:1;
 
@@ -621,8 +600,203 @@ footer{
 
 
 /* =================================
-   スマホ
+   YouTube
 ================================= */
+
+.youtubeArea{
+    flex:1;
+
+    min-height:0;
+
+    display:none;
+
+    flex-direction:column;
+
+    background:#050510;
+}
+
+.youtubeArea.show{
+    display:flex;
+}
+
+.youtubeSearchBar{
+    display:flex;
+
+    gap:8px;
+
+    padding:10px;
+
+    flex-shrink:0;
+
+    border-bottom:1px solid #ff00ff;
+
+    background:#080812;
+}
+
+.youtubeInput{
+    flex:1;
+
+    height:38px;
+
+    padding:0 12px;
+
+    border:1px solid #ff00ff;
+
+    border-radius:8px;
+
+    outline:none;
+
+    background:#050510;
+
+    color:white;
+
+    font-size:15px;
+}
+
+.youtubeInput:focus{
+    box-shadow:
+        0 0 10px #ff00ff,
+        0 0 25px rgba(255,0,255,.3);
+}
+
+.youtubeButton{
+    height:38px;
+
+    padding:0 18px;
+
+    border-color:#ff00ff;
+    color:#ff00ff;
+}
+
+.youtubeButton:hover{
+    background:#ff00ff;
+    color:#050510;
+}
+
+.youtubeResults{
+    flex:1;
+
+    min-height:0;
+
+    overflow:auto;
+
+    padding:15px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fill,minmax(240px,1fr));
+
+    gap:15px;
+
+    align-content:start;
+}
+
+.youtubeResult{
+    cursor:pointer;
+
+    background:#09091b;
+
+    border:1px solid rgba(255,0,255,.45);
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    transition:.15s;
+}
+
+.youtubeResult:hover{
+    transform:translateY(-3px);
+
+    border-color:#ff00ff;
+
+    box-shadow:
+        0 0 10px #ff00ff,
+        0 0 25px rgba(255,0,255,.2);
+}
+
+.youtubeThumbnail{
+    width:100%;
+
+    aspect-ratio:16 / 9;
+
+    object-fit:cover;
+
+    display:block;
+}
+
+.youtubeResultTitle{
+    padding:10px;
+
+    font-size:13px;
+
+    line-height:1.5;
+
+    color:#fff;
+}
+
+.youtubeMessage{
+    grid-column:1 / -1;
+
+    text-align:center;
+
+    color:#777;
+
+    padding:30px;
+}
+
+.youtubePlayerArea{
+    display:none;
+
+    flex:1;
+
+    min-height:0;
+
+    flex-direction:column;
+}
+
+.youtubePlayerArea.show{
+    display:flex;
+}
+
+.youtubePlayer{
+    flex:1;
+
+    width:100%;
+
+    border:0;
+
+    background:#000;
+}
+
+.youtubePlayerBar{
+    flex-shrink:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    padding:8px 12px;
+
+    background:#080812;
+
+    border-top:1px solid #ff00ff;
+
+    color:#777;
+
+    font-size:11px;
+}
+
+.youtubeBackButton{
+    color:#ff00ff;
+
+    border-color:#ff00ff;
+}
 
 @media(max-width:600px){
 
@@ -671,337 +845,366 @@ footer{
     .aboutBox{
         padding:25px;
     }
+
+    .youtubeResults{
+        grid-template-columns:1fr;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!--
-    ここでページ全体を包む。
-    拡大縮小はこの要素に適用するので、
-    メイン・説明画面・検索画面すべてが対象。
--->
 <div id="zoomRoot">
 
-    <!-- =========================
-         メインページ
-    ========================== -->
+<div class="page">
 
-    <div class="page">
+<header>
 
-        <header>
+<div class="logo">
+掛け算トレーニング
+</div>
 
-            <div class="logo">
-                掛け算トレーニング
-            </div>
+<div class="headerRight">
 
-            <div class="headerRight">
+<div class="status">
+● TRAINING MODE
+</div>
 
-                <div class="status">
-                    ● TRAINING MODE
-                </div>
+<div class="zoomControls">
 
-                <div class="zoomControls">
+<button onclick="zoomOut()">
+−
+</button>
 
-                    <button onclick="zoomOut()">
-                        −
-                    </button>
+<span id="zoomValue">
+100%
+</span>
 
-                    <span id="zoomValue">
-                        100%
-                    </span>
+<button onclick="zoomIn()">
+＋
+</button>
 
-                    <button onclick="zoomIn()">
-                        ＋
-                    </button>
+<button onclick="zoomReset()">
+リセット
+</button>
 
-                    <button onclick="zoomReset()">
-                        リセット
-                    </button>
+</div>
 
-                </div>
+</div>
 
-            </div>
+</header>
 
-        </header>
 
+<main>
 
-        <main>
+<div class="card">
 
-            <div class="card">
+<h1>
+掛け算練習
+</h1>
 
-                <h1>
-                    掛け算練習
-                </h1>
+<div class="subtitle">
+正解するまで次の問題には進みません
+</div>
 
-                <div class="subtitle">
-                    正解するまで次の問題には進みません
-                </div>
+<div
+class="question"
+id="question">
+？ × ？
+</div>
 
-                <div
-                    class="question"
-                    id="question">
-                    ？ × ？
-                </div>
+<div
+id="answerDisplay"
+class="answerDisplay empty">
 
+答えを入力
 
-                <!-- 独自入力表示 -->
+</div>
 
-                <div
-                    id="answerDisplay"
-                    class="answerDisplay empty">
+<div class="keypad">
 
-                    答えを入力
+<button class="key" onclick="pressNumber(1)">1</button>
+<button class="key" onclick="pressNumber(2)">2</button>
+<button class="key" onclick="pressNumber(3)">3</button>
 
-                </div>
+<button class="key" onclick="pressNumber(4)">4</button>
+<button class="key" onclick="pressNumber(5)">5</button>
+<button class="key" onclick="pressNumber(6)">6</button>
 
+<button class="key" onclick="pressNumber(7)">7</button>
+<button class="key" onclick="pressNumber(8)">8</button>
+<button class="key" onclick="pressNumber(9)">9</button>
 
-                <!-- 独自数字キーパッド -->
+<button class="key clear" onclick="clearAnswer()">C</button>
+<button class="key" onclick="pressNumber(0)">0</button>
+<button class="key delete" onclick="deleteNumber()">⌫</button>
 
-                <div class="keypad">
+<button
+class="key submit"
+style="grid-column:1 / 4"
+onclick="checkAnswer()">
 
-                    <button
-                        class="key"
-                        onclick="pressNumber(1)">
-                        1
-                    </button>
+✓ 回答する
 
-                    <button
-                        class="key"
-                        onclick="pressNumber(2)">
-                        2
-                    </button>
+</button>
 
-                    <button
-                        class="key"
-                        onclick="pressNumber(3)">
-                        3
-                    </button>
+</div>
 
-                    <button
-                        class="key"
-                        onclick="pressNumber(4)">
-                        4
-                    </button>
+<div id="result" class="result"></div>
 
-                    <button
-                        class="key"
-                        onclick="pressNumber(5)">
-                        5
-                    </button>
+<div class="score">
 
-                    <button
-                        class="key"
-                        onclick="pressNumber(6)">
-                        6
-                    </button>
+正解：
+<span id="score">0</span>
 
-                    <button
-                        class="key"
-                        onclick="pressNumber(7)">
-                        7
-                    </button>
+　
 
-                    <button
-                        class="key"
-                        onclick="pressNumber(8)">
-                        8
-                    </button>
+問題数：
+<span id="total">0</span>
 
-                    <button
-                        class="key"
-                        onclick="pressNumber(9)">
-                        9
-                    </button>
+</div>
 
-                    <button
-                        class="key clear"
-                        onclick="clearAnswer()">
-                        C
-                    </button>
+</div>
 
-                    <button
-                        class="key"
-                        onclick="pressNumber(0)">
-                        0
-                    </button>
+</main>
 
-                    <button
-                        class="key delete"
-                        onclick="deleteNumber()">
-                        ⌫
-                    </button>
 
-                    <button
-                        class="key submit"
-                        style="grid-column:1 / 4"
-                        onclick="checkAnswer()">
+<footer>
 
-                        ✓ 回答する
+<button
+class="aboutButton"
+onclick="aboutClick()">
 
-                    </button>
+このサイトについて
 
-                </div>
+</button>
 
+</footer>
 
-                <div
-                    id="result"
-                    class="result">
-                </div>
+</div>
 
 
-                <div class="score">
+<!-- =========================
+     このサイトについて
+========================= -->
 
-                    正解：
-                    <span id="score">0</span>
+<div
+id="aboutPage"
+class="overlay">
 
-                   　
+<div class="overlayHeader">
 
-                    問題数：
-                    <span id="total">0</span>
+<button
+class="back"
+onclick="goBack()">
 
-                </div>
+← 戻る
 
-            </div>
+</button>
 
-        </main>
+<div class="overlayTitle">
+このサイトについて
+</div>
 
+</div>
 
-        <footer>
+<div class="aboutContent">
 
-            <button
-                class="aboutButton"
-                onclick="aboutClick()">
+<div class="aboutBox">
 
-                このサイトについて
+<h2>
+このサイトについて
+</h2>
 
-            </button>
+<p>
+このサイトでは、1桁の掛け算を中心とした
+練習問題に取り組むことができます。
+</p>
 
-        </footer>
+<p>
+問題は自動的に生成され、
+回答するたびに正解数と問題数が記録されます。
+</p>
 
-    </div>
+<p>
+短い時間でも繰り返し練習できるよう、
+シンプルで使いやすい構成になっています。
+</p>
 
+<p>
+掛け算の計算力を身につけるために、
+毎日の練習にご利用ください。
+</p>
 
-    <!-- =========================
-         このサイトについて
-    ========================== -->
+</div>
 
-    <div
-        id="aboutPage"
-        class="overlay">
+</div>
 
-        <div class="overlayHeader">
+</div>
 
-            <button
-                class="back"
-                onclick="goBack()">
 
-                ← 戻る
+<!-- =========================
+     検索
+========================= -->
 
-            </button>
+<div
+id="searchPage"
+class="overlay">
 
-            <div class="overlayTitle">
-                このサイトについて
-            </div>
+<div class="overlayHeader">
 
-        </div>
+<button
+class="back"
+onclick="goBack()">
 
+← 戻る
 
-        <div class="aboutContent">
+</button>
 
-            <div class="aboutBox">
+<div class="overlayTitle">
+検索
+</div>
 
-                <h2>
-                    このサイトについて
-                </h2>
+</div>
 
-                <p>
-                    このサイトでは、1桁の掛け算を中心とした
-                    練習問題に取り組むことができます。
-                </p>
 
-                <p>
-                    問題は自動的に生成され、
-                    回答するたびに正解数と問題数が記録されます。
-                </p>
+<!-- Google / YouTube -->
 
-                <p>
-                    短い時間でも繰り返し練習できるよう、
-                    シンプルで使いやすい構成になっています。
-                </p>
+<div class="searchTabs">
 
-                <p>
-                    掛け算の計算力を身につけるために、
-                    毎日の練習にご利用ください。
-                </p>
+<button
+id="googleTab"
+class="searchTab active"
+onclick="switchSearch('google')">
 
-            </div>
+Google
 
-        </div>
+</button>
 
-    </div>
+<button
+id="youtubeTab"
+class="searchTab"
+onclick="switchSearch('youtube')">
 
+YouTube
 
-    <!-- =========================
-         検索画面
-         ※ #googlePage は使用しない
-    ========================== -->
+</button>
 
-    <div
-        id="searchPage"
-        class="overlay">
+</div>
 
-        <div class="overlayHeader">
 
-            <button
-                class="back"
-                onclick="goBack()">
+<!-- =========================
+     Google
+========================= -->
 
-                ← 戻る
+<div
+id="googleArea"
+class="searchArea">
 
-            </button>
+<div class="searchBar">
 
-            <div class="overlayTitle">
-                検索
-            </div>
+<input
+id="searchInput"
+class="searchInput"
+type="text"
+placeholder="Googleで検索">
 
-        </div>
+<button
+class="searchButton"
+onclick="googleSearch()">
 
+検索
 
-        <div class="searchArea">
+</button>
 
-            <div class="searchBar">
+</div>
 
-                <input
-                    id="searchInput"
-                    class="searchInput"
-                    type="text"
-                    placeholder="検索">
+<iframe
+id="googleFrame"
+class="googleFrame"
+src="https://www.google.com/search?igu=1"
+title="Google検索">
+</iframe>
 
-                <button
-                    class="searchButton"
-                    onclick="googleSearch()">
+</div>
 
-                    検索
 
-                </button>
+<!-- =========================
+     YouTube
+========================= -->
 
-            </div>
+<div
+id="youtubeArea"
+class="youtubeArea">
 
+<div class="youtubeSearchBar">
 
-            <!-- Googleを同じHTML内に埋め込み -->
+<input
+id="youtubeInput"
+class="youtubeInput"
+type="text"
+placeholder="YouTubeで検索">
 
-            <iframe
-                id="googleFrame"
-                class="googleFrame"
-                src="https://www.google.com/search?igu=1"
-                title="Google検索">
-            </iframe>
+<button
+class="youtubeButton"
+onclick="youtubeSearch()">
 
-        </div>
+検索
 
-    </div>
+</button>
+
+</div>
+
+
+<!-- 検索結果 -->
+
+<div
+id="youtubeResults"
+class="youtubeResults">
+
+<div class="youtubeMessage">
+YouTubeで検索してください
+</div>
+
+</div>
+
+
+<!-- プレイヤー -->
+
+<div
+id="youtubePlayerArea"
+class="youtubePlayerArea">
+
+<iframe
+id="youtubePlayer"
+class="youtubePlayer"
+src="about:blank"
+allow="autoplay; encrypted-media; picture-in-picture"
+allowfullscreen
+title="YouTube">
+</iframe>
+
+<div class="youtubePlayerBar">
+
+<span id="youtubeEmbedUrl">
+</span>
+
+<button
+class="youtubeBackButton"
+onclick="closeYoutubePlayer()">
+
+← 検索結果に戻る
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 </div>
 
@@ -1020,8 +1223,6 @@ let answer = "";
 let score = 0;
 let total = 0;
 
-
-/* 問題生成 */
 
 function newQuestion(){
 
@@ -1043,19 +1244,10 @@ function newQuestion(){
     document
         .getElementById("result")
         .textContent = "";
-
 }
 
 
-/* ==================================
-   独自入力
-================================== */
-
 function pressNumber(number){
-
-    /*
-       最大3桁
-    */
 
     if(answer.length >= 3){
         return;
@@ -1064,7 +1256,6 @@ function pressNumber(number){
     answer += number;
 
     updateDisplay();
-
 }
 
 
@@ -1074,7 +1265,6 @@ function deleteNumber(){
         answer.slice(0,-1);
 
     updateDisplay();
-
 }
 
 
@@ -1083,7 +1273,6 @@ function clearAnswer(){
     answer = "";
 
     updateDisplay();
-
 }
 
 
@@ -1113,13 +1302,8 @@ function updateDisplay(){
         );
 
     }
-
 }
 
-
-/* ==================================
-   回答
-================================== */
 
 function checkAnswer(){
 
@@ -1130,15 +1314,9 @@ function checkAnswer(){
     const value =
         Number(answer);
 
-
-    /*
-       正解
-    */
-
     if(value === a * b){
 
         score++;
-
         total++;
 
         document
@@ -1148,40 +1326,24 @@ function checkAnswer(){
             '✓ 正解！ 次の問題へ！' +
             '</span>';
 
-
         document
             .getElementById("score")
             .textContent =
             score;
-
 
         document
             .getElementById("total")
             .textContent =
             total;
 
-
-        /*
-           正解したときだけ
-           次の問題へ
-        */
-
         setTimeout(
             function(){
-
                 newQuestion();
-
             },
             500
         );
 
-
     }else{
-
-        /*
-           不正解の場合、
-           問題は変わらない
-        */
 
         total++;
 
@@ -1192,24 +1354,18 @@ function checkAnswer(){
             '✕ 不正解！ もう一度！' +
             '</span>';
 
-
         document
             .getElementById("total")
             .textContent =
             total;
 
-
         setTimeout(
             function(){
-
                 clearAnswer();
-
             },
             400
         );
-
     }
-
 }
 
 
@@ -1223,13 +1379,6 @@ function aboutClick(){
 
     aboutCount++;
 
-
-    /*
-       1回目 → 説明
-       2回目 → 同じ説明
-       3回目 → 検索
-    */
-
     if(aboutCount <= 2){
 
         showPage("aboutPage");
@@ -1239,7 +1388,6 @@ function aboutClick(){
         showPage("searchPage");
 
     }
-
 }
 
 
@@ -1257,11 +1405,9 @@ function showPage(id){
         .getElementById("searchPage")
         .classList.remove("show");
 
-
     document
         .getElementById(id)
         .classList.add("show");
-
 
     history.pushState(
         {
@@ -1270,13 +1416,8 @@ function showPage(id){
         "",
         "#" + id
     );
-
 }
 
-
-/* ==================================
-   戻る
-================================== */
 
 function goBack(){
 
@@ -1302,7 +1443,7 @@ window.addEventListener(
 
 
 /* ==================================
-   Google検索
+   Google
 ================================== */
 
 function googleSearch(){
@@ -1313,25 +1454,298 @@ function googleSearch(){
             .value
             .trim();
 
+    if(query === ""){
+        return;
+    }
+
+    const url =
+        "https://www.google.com/search?igu=1&q=" +
+        encodeURIComponent(query);
+
+    document
+        .getElementById("googleFrame")
+        .src = url;
+}
+
+
+/* ==================================
+   検索切り替え
+================================== */
+
+function switchSearch(mode){
+
+    const googleArea =
+        document.getElementById("googleArea");
+
+    const youtubeArea =
+        document.getElementById("youtubeArea");
+
+    const googleTab =
+        document.getElementById("googleTab");
+
+    const youtubeTab =
+        document.getElementById("youtubeTab");
+
+
+    if(mode === "google"){
+
+        googleArea.style.display = "flex";
+
+        youtubeArea.classList.remove("show");
+
+        googleTab.classList.add("active");
+
+        youtubeTab.classList.remove("active");
+
+    }else{
+
+        googleArea.style.display = "none";
+
+        youtubeArea.classList.add("show");
+
+        googleTab.classList.remove("active");
+
+        youtubeTab.classList.add("active");
+
+    }
+}
+
+
+/* ==================================
+   YouTube API
+================================== */
+
+
+/*
+   ここにYouTube Data API v3の
+   APIキーを入れる
+*/
+
+const YOUTUBE_API_KEY =
+    "YOUR_YOUTUBE_API_KEY";
+
+
+async function youtubeSearch(){
+
+    const query =
+        document
+            .getElementById("youtubeInput")
+            .value
+            .trim();
+
 
     if(query === ""){
         return;
     }
 
 
+    const results =
+        document.getElementById(
+            "youtubeResults"
+        );
+
+
+    results.innerHTML =
+        '<div class="youtubeMessage">' +
+        'YouTubeを検索中...' +
+        '</div>';
+
+
+    /*
+       YouTube Data API v3
+    */
+
     const url =
-        "https://www.google.com/search?igu=1&q=" +
-        encodeURIComponent(query);
+        "https://www.googleapis.com/youtube/v3/search" +
+        "?part=snippet" +
+        "&type=video" +
+        "&maxResults=20" +
+        "&q=" +
+        encodeURIComponent(query) +
+        "&key=" +
+        encodeURIComponent(YOUTUBE_API_KEY);
 
 
-    document
-        .getElementById("googleFrame")
-        .src = url;
+    try{
+
+        const response =
+            await fetch(url);
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                data.error?.message ||
+                "YouTube APIエラー"
+            );
+
+        }
+
+
+        results.innerHTML = "";
+
+
+        if(!data.items || data.items.length === 0){
+
+            results.innerHTML =
+                '<div class="youtubeMessage">' +
+                '検索結果がありません。' +
+                '</div>';
+
+            return;
+        }
+
+
+        for(const item of data.items){
+
+            const videoId =
+                item.id.videoId;
+
+
+            if(!videoId){
+                continue;
+            }
+
+
+            const title =
+                item.snippet.title;
+
+
+            const thumbnail =
+                item.snippet.thumbnails?.medium?.url ||
+                item.snippet.thumbnails?.default?.url;
+
+
+            const div =
+                document.createElement("div");
+
+
+            div.className =
+                "youtubeResult";
+
+
+            div.innerHTML =
+
+                '<img ' +
+                'class="youtubeThumbnail" ' +
+                'src="' +
+                thumbnail +
+                '" ' +
+                'alt="">' +
+
+                '<div class="youtubeResultTitle">' +
+                escapeHtml(title) +
+                '</div>';
+
+
+            div.onclick =
+                function(){
+
+                    playYoutube(videoId);
+
+                };
+
+
+            results.appendChild(div);
+
+        }
+
+
+    }catch(error){
+
+        console.error(error);
+
+
+        results.innerHTML =
+            '<div class="youtubeMessage">' +
+            'YouTube検索に失敗しました。<br><br>' +
+            escapeHtml(error.message) +
+            '</div>';
+
+    }
 
 }
 
 
-/* Enterで検索 */
+/* ==================================
+   YouTube再生
+================================== */
+
+function playYoutube(videoId){
+
+    const embedUrl =
+        "https://www.youtube.com/embed/" +
+        videoId;
+
+
+    document
+        .getElementById("youtubePlayer")
+        .src = embedUrl;
+
+
+    document
+        .getElementById("youtubeEmbedUrl")
+        .textContent =
+        embedUrl;
+
+
+    document
+        .getElementById("youtubeResults")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("youtubePlayerArea")
+        .classList.add("show");
+
+}
+
+
+function closeYoutubePlayer(){
+
+    document
+        .getElementById("youtubePlayer")
+        .src =
+        "about:blank";
+
+
+    document
+        .getElementById("youtubePlayerArea")
+        .classList.remove("show");
+
+
+    document
+        .getElementById("youtubeResults")
+        .style.display =
+        "grid";
+
+}
+
+
+/* ==================================
+   HTMLエスケープ
+================================== */
+
+function escapeHtml(text){
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+/* ==================================
+   Enter
+================================== */
 
 document
     .getElementById("searchInput")
@@ -1349,8 +1763,24 @@ document
     );
 
 
+document
+    .getElementById("youtubeInput")
+    .addEventListener(
+        "keydown",
+        function(e){
+
+            if(e.key === "Enter"){
+
+                youtubeSearch();
+
+            }
+
+        }
+    );
+
+
 /* ==================================
-   ページ拡大・縮小
+   ズーム
 ================================== */
 
 let zoom = 100;
@@ -1364,25 +1794,11 @@ function applyZoom(){
         );
 
 
-    /*
-       ページ全体に倍率を適用。
-
-       iframeを含む検索画面も
-       この中にあるため、
-       Google埋め込み画面にも
-       同じ倍率が適用される。
-    */
-
     root.style.transform =
         "scale(" +
         (zoom / 100) +
         ")";
 
-
-    /*
-       拡大後も画面いっぱいに
-       使えるようサイズを調整
-    */
 
     root.style.width =
         (100 / (zoom / 100)) + "%";
